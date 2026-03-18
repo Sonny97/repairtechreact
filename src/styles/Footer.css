@@ -1,0 +1,69 @@
+.footer {
+    background: linear-gradient(135deg, var(--text-dark), var(--footer-dark));
+    color: var(--bg-white);
+    padding: 3rem 20px 1rem;
+}
+
+.footer-container {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    color: var(--accent-yellow);
+}
+
+.footer-section p {
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+.footer-year {
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+.team-list,
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.team-list li,
+.footer-links li {
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: var(--primary-cyan);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--border-white-10);
+    padding-top: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}

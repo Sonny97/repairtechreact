@@ -1,0 +1,116 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-dark);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--bg-white);
+    padding: 40px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    animation: fadeInUp 0.4s ease;
+    position: relative;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.modal-content h2::after {
+    display: none;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content input {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+    outline: none;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+
+.modal-content input:focus {
+    border-color: var(--primary-cyan);
+    box-shadow: 0 0 10px var(--primary-cyan-50);
+}
+
+.modal-content input::placeholder {
+    color: var(--text-muted);
+}
+
+.modal-content select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+    outline: none;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    background: var(--bg-white);
+    color: var(--text-body);
+    cursor: pointer;
+}
+
+.modal-content select:focus {
+    border-color: var(--primary-cyan);
+    box-shadow: 0 0 10px var(--primary-cyan-50);
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-body);
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: var(--primary-cyan);
+}
+
+.modal-description {
+    margin-bottom: 15px;
+    color: var(--text-body);
+}
+
+.usuarios-list {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+.usuarios-list li {
+    padding: 10px 15px;
+    background: var(--bg-body);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: var(--text-body);
+    border-left: 3px solid var(--primary-cyan);
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 25px;
+        margin: 0 15px;
+    }
+}

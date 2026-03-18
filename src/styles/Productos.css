@@ -1,0 +1,176 @@
+.productos {
+    padding: 100px 8%;
+    text-align: center;
+    background: var(--bg-white);
+}
+
+.productos h2 {
+    font-size: 32px;
+    margin-bottom: 50px;
+    color: var(--text-dark);
+}
+
+.product-grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    background: var(--bg-body);
+    border-radius: 15px;
+    overflow: hidden;
+    width: 260px;
+    transition: 0.4s;
+    box-shadow: 0 10px 25px var(--shadow-sm);
+    padding: 20px;
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-card h3 {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.product-card p {
+    color: var(--text-body);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.product-card .price {
+    color: var(--primary-cyan);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.cart-items {
+    list-style: none;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.cart-items li {
+    border-bottom: 1px solid var(--border-light);
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.qty-btn,
+.remove-btn {
+    background: var(--primary-cyan);
+    color: var(--bg-white);
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.remove-btn {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    width: auto;
+    padding: 0 6px;
+}
+
+.cart-controls {
+    margin-top: 16px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.cart-summary p {
+    margin: 6px 0;
+}
+
+.cart-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.cart-shipping label,
+.cart-coupon label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.cart-coupon input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+    width: 60%;
+}
+
+.coupon-msg {
+    color: var(--primary-cyan);
+    font-size: 0.9rem;
+    margin-top: 6px;
+}
+
+.payment-methods p {
+    margin: 0 0 6px 0;
+    font-weight: 600;
+}
+
+.payment-methods label {
+    margin-right: 10px;
+}
+
+.checkout-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.cart-total {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .productos h2 {
+        font-size: 28px;
+    }
+
+    .product-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-card {
+        width: 100%;
+        max-width: 300px;
+    }
+}

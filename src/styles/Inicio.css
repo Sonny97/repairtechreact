@@ -1,0 +1,37 @@
+.hero {
+    height: 100vh;
+    background: linear-gradient(135deg, var(--gradient-dark), var(--gradient-mid), var(--gradient-light));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--bg-white);
+    padding: 0 10%;
+    padding-top: 70px;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: fadeInDown 1.2s ease;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    animation: fadeInUp 1.5s ease;
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+}

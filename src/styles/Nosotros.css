@@ -1,0 +1,37 @@
+.nosotros {
+    padding: 100px 8%;
+    text-align: center;
+    background: linear-gradient(135deg, var(--gradient-dark), var(--gradient-mid));
+    color: var(--bg-white);
+}
+
+.nosotros .content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.nosotros h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: var(--bg-white);
+}
+
+.nosotros h2::after {
+    background: var(--primary-cyan);
+}
+
+.nosotros p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+    .nosotros h2 {
+        font-size: 28px;
+    }
+
+    .nosotros p {
+        font-size: 1rem;
+    }
+}
