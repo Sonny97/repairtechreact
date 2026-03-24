@@ -15,6 +15,8 @@ import Productos from './pages/Productos';
 import Nosotros from './pages/Nosotros';
 import Contacto from './pages/Contacto';
 
+
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [modals, setModals] = useState({
@@ -49,25 +51,25 @@ function App() {
 
   const listaInsumos = [
     {
-      imagen: "img/repuesto1.jpg",
+      imagen: "/img/repuesto1.jpg",
       alt: "Repuesto Lavadora",
       nombre: "Motor para Lavadora",
       precio: "$120.000"
     },
     {
-      imagen: "img/repuesto2.jpg",
+      imagen: "/img/repuesto2.jpg",
       alt: "Repuesto Nevera",
       nombre: "Termostato Nevera",
       precio: "$45.000"
     },
     {
-      imagen: "img/compresor-nevera.jpg",
+      imagen: "/img/compresor-nevera.jpg",
       alt: "Compresor Nevera",
       nombre: "Compresor Nevera",
       precio: "$250.000"
     },
     {
-      imagen: "img/Bomba lavadora.jpg",
+      imagen: "/img/Bomba-lavadora.jpg",
       alt: "Bomba de Agua",
       nombre: "Bomba de Agua Lavadora",
       precio: "$85.000"
