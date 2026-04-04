@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+import { Routes, Route } from "react-router-dom";
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Loader from './components/Loader';
@@ -225,6 +227,11 @@ function App() {
       />
       
       <main>
+  <Routes>
+    
+    {/* HOME: TODO junto (como antes) */}
+    <Route path="/" element={
+      <>
         <Inicio />
         <Servicios onMantenimientoClick={() => abrirModal('usuariosModal')} />
         <Productos 
@@ -233,7 +240,29 @@ function App() {
         />
         <Nosotros />
         <Contacto onSubmitUsuario={agregarUsuarioContacto} />
-      </main>
+      </>
+    } />
+
+    {/* RUTAS INDIVIDUALES */}
+    <Route path="/servicios" element={
+      <Servicios onMantenimientoClick={() => abrirModal('usuariosModal')} />
+    } />
+
+    <Route path="/productos" element={
+      <Productos 
+        productos={listaInsumos} 
+        onAgregarCarrito={agregarAlCarrito}
+      />
+    } />
+
+    <Route path="/nosotros" element={<Nosotros />} />
+
+    <Route path="/contacto" element={
+      <Contacto onSubmitUsuario={agregarUsuarioContacto} />
+    } />
+
+  </Routes>
+</main>
       
       <Footer />
 
