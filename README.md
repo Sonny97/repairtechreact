@@ -1,6 +1,12 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).Migu
+
+## Available Scripts
+- Miguel David Montenegro
+- Paula Andrea Rosero Colorado
+- Victor Manuel Florez Taborda
+
 
 ## Available Scripts
 
