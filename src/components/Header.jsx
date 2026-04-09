@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import '../styles/Header.css';
 
 const Header = ({ abrirModal, currentUser, onLogout, cartCount }) => {
@@ -15,11 +15,11 @@ const Header = ({ abrirModal, currentUser, onLogout, cartCount }) => {
 
             <nav className="nav">
                 <ul className={menuActive ? 'active' : ''}>
-                    <li><Link to="/">Inicio</Link></li>
-                    <li><Link to="/servicios">Servicios</Link></li>
-                    <li><Link to="/productos">Insumos</Link></li>
-                    <li><Link to="/nosotros">Nosotros</Link></li>
-                    <li><Link to="/contacto">Contacto</Link></li>
+                    <li><a href="#inicio" onClick={() => setMenuActive(false)}>Inicio</a></li>
+                    <li><a href="#servicios" onClick={() => setMenuActive(false)}>Servicios</a></li>
+                    <li><a href="#productos" onClick={() => setMenuActive(false)}>Insumos</a></li>
+                    <li><a href="#nosotros" onClick={() => setMenuActive(false)}>Nosotros</a></li>
+                    <li><a href="#contacto" onClick={() => setMenuActive(false)}>Contacto</a></li>
                 </ul>
             </nav>
 
