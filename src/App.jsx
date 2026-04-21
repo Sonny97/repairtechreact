@@ -19,6 +19,8 @@ import Contacto from './pages/Contacto';
 
 
 
+
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [modals, setModals] = useState({
@@ -110,6 +112,7 @@ function App() {
 
   const abrirModal = (modalName) => {
     setModals(prev => ({ ...prev, [modalName]: true }));
+    // login();
   };
 
   const cerrarModal = (modalName) => {

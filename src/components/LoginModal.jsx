@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import '../styles/Modal.css';
+import { login } from '../services/userService';
 
-const LoginModal = ({ isOpen, onClose, onLogin }) => {
+const LoginModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = onLogin(email.trim().toLowerCase(), password);
-        if (success) {
-            setEmail('');
-            setPassword('');
+        try {
+            const response = await login({ email: email, password });
+            if (response.status === 200) {
+                setEmail('');
+                setPassword('');
+                onClose();
+            }
+        } catch (error) {
+            console.error('Error en login:', error);
         }
     };
 
