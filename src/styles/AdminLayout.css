@@ -1,4 +1,4 @@
-/* AdminLayout.css - Versión Responsive Mejorada */
+
 
 * {
   margin: 0;
@@ -16,8 +16,8 @@
 /* ========== SIDEBAR ========== */
 .admin-sidebar {
   width: 280px;
-  background-color: #ffffff;
-  border-right: 1px solid #e8e8e8;
+  background-color: #2A5159;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -29,14 +29,14 @@
 
 .sidebar-logo {
   padding: 24px 20px;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 20px;
 }
 
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #ffffff;
 }
 
 .logo-text span {
@@ -61,7 +61,7 @@
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
-  color: #555;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: all 0.2s ease;
   width: 100%;
@@ -69,7 +69,7 @@
 }
 
 .nav-item:hover {
-  background-color: #f0f7fe;
+  background-color: rgba(5, 199, 242, 0.15);
   color: #05C7F2;
 }
 
@@ -92,17 +92,17 @@
 
 .sidebar-footer {
   padding: 20px 16px;
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: auto;
 }
 
 .nav-item.logout {
-  color: #dc3545;
+  color: #ff6b6b;
 }
 
 .nav-item.logout:hover {
-  background-color: #fee;
-  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.15);
+  color: #ff6b6b;
 }
 
 /* ========== TOGGLE SIDEBAR PARA MÓVIL ========== */
@@ -148,13 +148,14 @@
   width: calc(100% - 280px);
 }
 
+/* HEADER CON FONDO #102027 */
 .admin-header {
-  background-color: #ffffff;
+  background-color: #102027;
   padding: 16px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -165,7 +166,7 @@
 .header-title h1 {
   font-size: 20px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #ffffff;
 }
 
 .header-user {
@@ -177,7 +178,7 @@
 .user-name {
   font-size: 14px;
   font-weight: 500;
-  color: #555;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .user-avatar {
@@ -241,7 +242,7 @@
   }
 }
 
-/* Móviles grandes / Tablets pequeñas (576px - 767px) */
+
 @media (max-width: 767px) {
   .admin-sidebar {
     transform: translateX(-100%);
@@ -252,7 +253,7 @@
   
   .admin-sidebar.open {
     transform: translateX(0);
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
   }
   
   .admin-main {
@@ -356,7 +357,7 @@
   }
 }
 
-/* Móviles muy pequeños (menos de 375px) */
+
 @media (max-width: 374px) {
   .admin-sidebar {
     width: 240px;
@@ -405,11 +406,11 @@
 }
 
 .admin-sidebar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .admin-sidebar::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 3px;
 }
 
@@ -439,7 +440,7 @@
 /* Firefox scrollbar */
 .admin-sidebar {
   scrollbar-width: thin;
-  scrollbar-color: #ccc #f1f1f1;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
 
 .admin-content {
@@ -475,7 +476,7 @@
   }
   
   .nav-item:active {
-    background-color: #f0f7fe;
+    background-color: rgba(5, 199, 242, 0.2);
     transform: scale(0.98);
   }
 }

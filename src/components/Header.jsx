@@ -8,7 +8,7 @@ const Header = ({ abrirModal, currentUser, onLogout, cartCount, isAdminView }) =
         setMenuActive(!menuActive);
     };
 
-    // Si es admin y está en vista de admin, no mostrar el menú de navegación
+    
     if (isAdminView) {
         return (
             <header className="header admin-header">
