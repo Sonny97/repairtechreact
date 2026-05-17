@@ -9,6 +9,8 @@ import LoginModal from './components/LoginModal';
 import UsuariosModal from './components/UsuariosModal';
 import CartModal from './components/CartModal';
 import AdminLayout from './components/AdminLayout';
+import ClienteDashboard from './components/ClienteDashboard';
+import TecnicoDashboard from './components/TecnicoDashboard';
 
 import Inicio from './pages/Inicio';
 import Servicios from './pages/Servicios';
@@ -27,7 +29,9 @@ function App() {
 
   const [accounts, setAccounts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [isAdminView, setIsAdminView] = useState(false); // Nuevo estado
+  const [isAdminView, setIsAdminView] = useState(false);
+  const [isClienteView, setIsClienteView] = useState(false);
+  const [isTecnicoView, setIsTecnicoView] = useState(false);
 
   const [carrito, setCarrito] = useState([]);
   const [currentShipping, setCurrentShipping] = useState(0);
@@ -83,9 +87,19 @@ function App() {
       try {
         const user = JSON.parse(storedUser);
         setCurrentUser(user);
-        // Si el usuario es admin, mostrar vista de admin
+        // Redirigir según el rol
         if (user.rol === 'admin') {
           setIsAdminView(true);
+          setIsClienteView(false);
+          setIsTecnicoView(false);
+        } else if (user.rol === 'cliente') {
+          setIsClienteView(true);
+          setIsAdminView(false);
+          setIsTecnicoView(false);
+        } else if (user.rol === 'tecnico') {
+          setIsTecnicoView(true);
+          setIsAdminView(false);
+          setIsClienteView(false);
         }
       } catch (e) {
         console.error('Error al cargar usuario:', e);
@@ -132,18 +146,36 @@ function App() {
     alert(`Bienvenido ${userData.nombre_completo || userData.email}`);
     cerrarModal('loginModal');
     
-    // Si es admin, cambiar a vista de administrador
+    // Redirigir según el rol
     if (userData.rol === 'admin') {
       setIsAdminView(true);
+      setIsClienteView(false);
+      setIsTecnicoView(false);
+    } else if (userData.rol === 'cliente') {
+      setIsClienteView(true);
+      setIsAdminView(false);
+      setIsTecnicoView(false);
+    } else if (userData.rol === 'tecnico') {
+      setIsTecnicoView(true);
+      setIsAdminView(false);
+      setIsClienteView(false);
     }
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
     setIsAdminView(false);
+    setIsClienteView(false);
+    setIsTecnicoView(false);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     alert('Sesión cerrada correctamente');
+  };
+
+  // Actualizar datos del usuario (para edición de perfil)
+  const handleUpdateUser = (updatedUser) => {
+    setCurrentUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   const agregarAlCarrito = (insumo) => {
@@ -218,7 +250,7 @@ function App() {
 
   const totalUnidades = carrito.reduce((acc, item) => acc + item.cantidad, 0);
 
-  // Si es admin y está en vista de admin, mostrar AdminLayout
+  // Si es admin, mostrar AdminLayout
   if (isAdminView && currentUser?.rol === 'admin') {
     return (
       <>
@@ -231,7 +263,34 @@ function App() {
     );
   }
 
-  // Vista normal para clientes y usuarios no logueados
+  // Si es cliente, mostrar ClienteDashboard
+  if (isClienteView && currentUser?.rol === 'cliente') {
+    return (
+      <>
+        <Loader isLoading={isLoading} />
+        <ClienteDashboard 
+          currentUser={currentUser} 
+          onLogout={handleLogout}
+          onUpdateUser={handleUpdateUser}
+        />
+      </>
+    );
+  }
+
+  // Si es técnico, mostrar TecnicoDashboard
+  if (isTecnicoView && currentUser?.rol === 'tecnico') {
+    return (
+      <>
+        <Loader isLoading={isLoading} />
+        <TecnicoDashboard 
+          currentUser={currentUser} 
+          onLogout={handleLogout}
+        />
+      </>
+    );
+  }
+
+  // Vista normal para usuarios no logueados
   return (
     <div className="App">
       <Loader isLoading={isLoading} />

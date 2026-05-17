@@ -1,0 +1,266 @@
+.tecnico-citas-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+/* Estadísticas */
+.estadisticas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.estadistica-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.estadistica-card:hover {
+  transform: translateY(-2px);
+}
+
+.estadistica-valor {
+  font-size: 28px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.estadistica-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.estadistica-card.pendiente .estadistica-valor { color: #ed6c02; }
+.estadistica-card.confirmada .estadistica-valor { color: #0288d1; }
+.estadistica-card.proceso .estadistica-valor { color: #2e7d32; }
+.estadistica-card.completada .estadistica-valor { color: #0891b2; }
+
+/* Filtros */
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.filtro-btn {
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filtro-btn:hover {
+  background: #e0e0e0;
+}
+
+.filtro-btn.active {
+  background: #05C7F2;
+  color: white;
+}
+
+/* Lista de citas */
+.citas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cita-card-tecnico {
+  background: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+  border: 1px solid #e8e8e8;
+}
+
+.cita-card-tecnico:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cita-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cliente-info h3 {
+  font-size: 16px;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.cliente-info p {
+  font-size: 13px;
+  color: #666;
+}
+
+.status-badge-tecnico {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-pendiente { background: #fff3e0; color: #ed6c02; }
+.status-confirmada { background: #e3f2fd; color: #0288d1; }
+.status-proceso { background: #e8f5e9; color: #2e7d32; }
+.status-completada { background: #e0f2fe; color: #0891b2; }
+.status-cancelada { background: #ffebee; color: #c62828; }
+
+.cita-body {
+  padding: 16px 20px;
+}
+
+.cita-detalles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detalle-item label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detalle-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.detalle-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detalle-item.full-width p {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cita-footer {
+  padding: 12px 20px 20px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.btn-estado {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-confirmar {
+  background: #e3f2fd;
+  color: #0288d1;
+}
+
+.btn-confirmar:hover {
+  background: #0288d1;
+  color: white;
+}
+
+.btn-iniciar {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.btn-iniciar:hover {
+  background: #2e7d32;
+  color: white;
+}
+
+.btn-completar {
+  background: #e0f2fe;
+  color: #0891b2;
+}
+
+.btn-completar:hover {
+  background: #0891b2;
+  color: white;
+}
+
+.btn-estado:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.no-citas {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.no-citas-icon {
+  margin-bottom: 20px;
+}
+
+.no-citas h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.no-citas p {
+  color: #999;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tecnico-citas-container {
+    padding: 16px;
+  }
+  
+  .estadisticas-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .filtros-container {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 12px;
+  }
+  
+  .cita-header {
+    flex-direction: column;
+  }
+  
+  .cita-detalles {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn-estado {
+    width: 100%;
+  }
+}
