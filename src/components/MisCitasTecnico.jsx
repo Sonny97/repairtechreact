@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getCitasByTecnico, updateCitaEstado} from '../services/userService';
+import AlertModal from './AlertModal';
 import '../styles/MisCitasTecnico.css';
 
 const MisCitasTecnico = ({ currentUser }) => {
@@ -7,6 +8,7 @@ const MisCitasTecnico = ({ currentUser }) => {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
   const [filtro, setFiltro] = useState('todas');
+  const [alertModal, setAlertModal] = useState({ isOpen: false, type: 'info', title: '', message: '' });
 
   useEffect(() => {
     cargarCitas();
@@ -27,7 +29,7 @@ const MisCitasTecnico = ({ currentUser }) => {
     if (result.success) {
       await cargarCitas();
     } else {
-      alert(result.message);
+      setAlertModal({ isOpen: true, type: 'error', title: 'Error', message: result.message });
     }
     setUpdatingId(null);
   };
@@ -218,6 +220,14 @@ const MisCitasTecnico = ({ currentUser }) => {
           })}
         </div>
       )}
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}
+        type={alertModal.type}
+        title={alertModal.title}
+        message={alertModal.message}
+      />
     </div>
   );
 };

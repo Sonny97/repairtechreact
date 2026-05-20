@@ -1,10 +1,11 @@
 .agendar-cita-container {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 32px;
-  max-width: 800px;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 900px;
   margin: 0 auto;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(5, 199, 242, 0.1);
 }
 
 /* Steps Indicator */
@@ -12,54 +13,84 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
+  margin-bottom: 50px;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #f8fbfc 0%, #e8f4f8 100%);
+  border-radius: 16px;
+  position: relative;
 }
 
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .step-number {
-  width: 36px;
-  height: 36px;
-  background-color: #e8e8e8;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  color: #999;
-  transition: all 0.3s;
+  font-weight: 700;
+  font-size: 18px;
+  color: #666;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 3px solid transparent;
 }
 
 .step.active .step-number {
-  background-color: #05C7F2;
+  background: linear-gradient(135deg, #05c7f2 0%, #0099cc 100%);
   color: white;
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(5, 199, 242, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-.step span {
-  font-size: 12px;
-  color: #999;
+.step.completed .step-number {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
-.step.active span {
-  color: #05C7F2;
-  font-weight: 500;
+.step span:not(.step-number) {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.step.active span:not(.step-number) {
+  color: #05c7f2;
+  font-weight: 700;
+}
+
+.step.completed span:not(.step-number) {
+  color: #28a745;
 }
 
 .step-line {
-  width: 60px;
-  height: 2px;
-  background-color: #e8e8e8;
-  margin: 0 8px 24px 8px;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #e0e0e0 0%, #d0d0d0 100%);
+  margin: 0 16px 28px 16px;
+  border-radius: 2px;
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .step-line.active {
-  background-color: #05C7F2;
+  background: linear-gradient(90deg, #05c7f2 0%, #0099cc 100%);
+  box-shadow: 0 2px 8px rgba(5, 199, 242, 0.3);
 }
 
 /* Step Content */
@@ -97,12 +128,12 @@
 }
 
 .servicio-card.selected {
-  border-color: #05C7F2;
+  border-color: #05c7f2;
   background: rgba(5, 199, 242, 0.05);
 }
 
 .servicio-icon {
-  color: #05C7F2;
+  color: #05c7f2;
   margin-bottom: 16px;
 }
 
@@ -115,34 +146,47 @@
 .servicio-precio {
   font-size: 18px;
   font-weight: 700;
-  color: #05C7F2;
+  color: #05c7f2;
 }
 
 /* Electro Grid */
 .electro-grid {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .electro-card {
   background: #f8f9fa;
-  border: 2px solid transparent;
+  border: 2px solid #e0e0e0;
   border-radius: 12px;
-  padding: 16px 24px;
+  padding: 16px 28px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   font-weight: 500;
+  color: #555;
 }
 
 .electro-card:hover {
   transform: translateY(-2px);
+  border-color: #05c7f2;
+  box-shadow: 0 4px 12px rgba(5, 199, 242, 0.15);
 }
 
 .electro-card.selected {
-  border-color: #05C7F2;
-  background: rgba(5, 199, 242, 0.05);
-  color: #05C7F2;
+  border-color: #05c7f2;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 199, 242, 0.1) 0%,
+    rgba(5, 199, 242, 0.05) 100%
+  );
+  color: #05c7f2;
+  box-shadow: 0 4px 15px rgba(5, 199, 242, 0.25);
+}
+
+.electro-card.selected span::before {
+  content: '✓ ';
+  color: #05c7f2;
 }
 
 /* Form Group */
@@ -153,28 +197,84 @@
 .form-group label {
   display: block;
   font-size: 14px;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.form-group label .required {
+  color: #e74c3c;
+  margin-left: 2px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   font-size: 14px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  background: #fafafa;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #05C7F2;
-  box-shadow: 0 0 0 3px rgba(5, 199, 242, 0.1);
+  border-color: #05c7f2;
+  box-shadow: 0 0 0 4px rgba(5, 199, 242, 0.15);
+  background: #fff;
+}
+
+.form-group input.valid,
+.form-group textarea.valid {
+  border-color: #28a745;
+  background: rgba(40, 167, 69, 0.03);
+}
+
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.03);
+}
+
+.form-group.has-warning input,
+.form-group.has-warning textarea {
+  border-color: #f39c12;
+  background: rgba(243, 156, 18, 0.03);
+}
+
+.field-hint {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.field-hint:has(+ .valid),
+.form-group textarea.valid + .field-footer .field-hint {
+  color: #28a745;
+}
+
+.field-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.char-count {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+
+.char-count.valid {
+  color: #28a745;
 }
 
 /* Horarios Grid */
@@ -199,9 +299,9 @@
 }
 
 .hora-card.selected {
-  border-color: #05C7F2;
+  border-color: #05c7f2;
   background: rgba(5, 199, 242, 0.05);
-  color: #05C7F2;
+  color: #05c7f2;
 }
 
 /* Técnicos Grid */
@@ -230,14 +330,14 @@
 }
 
 .tecnico-card.selected {
-  border-color: #05C7F2;
+  border-color: #05c7f2;
   background: rgba(5, 199, 242, 0.05);
 }
 
 .tecnico-avatar {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #2A5159, #1a3a40);
+  background: linear-gradient(135deg, #2a5159, #1a3a40);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -265,7 +365,7 @@
 
 .tecnico-rating {
   font-size: 12px;
-  color: #FF9800;
+  color: #ff9800;
 }
 
 /* Step Buttons */
@@ -278,41 +378,47 @@
 }
 
 .btn-primary {
-  background-color: #05C7F2;
+  background: linear-gradient(135deg, #05c7f2 0%, #0099cc 100%);
   color: white;
   border: none;
-  padding: 12px 32px;
-  border-radius: 10px;
-  font-size: 14px;
+  padding: 14px 36px;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(5, 199, 242, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #049bc0;
+  background: linear-gradient(135deg, #0099cc 0%, #007ba3 100%);
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 199, 242, 0.4);
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  background: linear-gradient(135deg, #c0c0c0 0%, #a0a0a0 100%);
   cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+  transform: none;
 }
 
 .btn-secondary {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
   color: #555;
-  border: none;
-  padding: 12px 32px;
-  border-radius: 10px;
-  font-size: 14px;
+  border: 2px solid #e0e0e0;
+  padding: 14px 36px;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background-color: #e0e0e0;
+  background-color: #e8e8e8;
+  border-color: #ccc;
 }
 
 /* Success Container */
@@ -369,13 +475,13 @@
   border-top: 1px solid #e0e0e0;
   font-weight: 700;
   font-size: 16px;
-  color: #05C7F2;
+  color: #05c7f2;
 }
 
 .btn-nueva-cita {
   background: transparent;
-  border: 2px solid #05C7F2;
-  color: #05C7F2;
+  border: 2px solid #05c7f2;
+  color: #05c7f2;
   padding: 12px 32px;
   border-radius: 10px;
   font-size: 14px;
@@ -385,17 +491,41 @@
 }
 
 .btn-nueva-cita:hover {
-  background: #05C7F2;
+  background: #05c7f2;
   color: white;
 }
 
 .error-message {
-  background: #ffebee;
+  background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
   color: #c62828;
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
   font-size: 14px;
+  font-weight: 500;
+  border-left: 4px solid #e74c3c;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: shake 0.4s ease-in-out;
+}
+
+.error-message::before {
+  content: '⚠';
+  font-size: 18px;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes fadeIn {
@@ -412,37 +542,49 @@
 /* Responsive */
 @media (max-width: 768px) {
   .agendar-cita-container {
-    padding: 20px;
+    padding: 24px 16px;
+    border-radius: 16px;
+    margin: 0 8px;
   }
-  
+
   .steps-indicator {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
+    padding: 20px 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
   }
-  
+
   .step-line {
-    width: 30px;
+    width: 40px;
+    margin: 0 8px 28px 8px;
   }
-  
+
   .step-number {
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
   }
-  
-  .step span {
+
+  .step.active .step-number {
+    transform: scale(1.05);
+  }
+
+  .step span:not(.step-number) {
     font-size: 10px;
+    white-space: nowrap;
   }
-  
+
   .servicios-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .step-buttons {
     flex-direction: column-reverse;
     gap: 12px;
   }
-  
-  .btn-primary, .btn-secondary {
+
+  .btn-primary,
+  .btn-secondary {
     width: 100%;
   }
 }
@@ -459,7 +601,7 @@
   background: rgba(5, 199, 242, 0.1);
   padding: 16px;
   border-radius: 12px;
-  border-left: 3px solid #05C7F2;
+  border-left: 3px solid #05c7f2;
 }
 
 .info-message-content svg {
@@ -482,7 +624,7 @@
 }
 
 .selected-info p {
-  color: #05C7F2;
+  color: #05c7f2;
   font-weight: 500;
 }
 
@@ -493,11 +635,35 @@
 }
 
 @media (max-width: 480px) {
+  .agendar-cita-container {
+    padding: 20px 12px;
+    border-radius: 12px;
+  }
+
+  .steps-indicator {
+    padding: 16px 8px;
+  }
+
+  .step-number {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .step-line {
+    width: 25px;
+    margin: 0 4px 28px 4px;
+  }
+
+  .step span:not(.step-number) {
+    font-size: 9px;
+  }
+
   .tecnico-card {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .resumen-item {
     flex-direction: column;
     gap: 4px;

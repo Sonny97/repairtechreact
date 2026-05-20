@@ -22,6 +22,7 @@ const AdminDashboard = ({ currentUser }) => {
     tecnicos: 0,
     admins: 0,
     clientes: 0,
+    rolesData: [],
     crecimientoMensual: []
   });
   const [loading, setLoading] = useState(true);

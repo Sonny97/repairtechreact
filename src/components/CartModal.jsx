@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AlertModal from './AlertModal';
 import '../styles/Modal.css';
 import '../styles/Productos.css';
 
@@ -18,6 +19,7 @@ const CartModal = ({
 }) => {
     const [couponInput, setCouponInput] = useState('');
     const [couponMsg, setCouponMsg] = useState('');
+    const [alertModal, setAlertModal] = useState({ isOpen: false, type: 'info', title: '', message: '' });
 
     if (!isOpen) return null;
 
@@ -49,11 +51,14 @@ const CartModal = ({
     };
 
     const handlePayNow = () => {
-        alert("Redirigiendo a pasarela de pago...");
-        handleFinalizarCompra();
+        setAlertModal({ isOpen: true, type: 'info', title: 'Procesando', message: 'Redirigiendo a pasarela de pago...' });
+        setTimeout(() => {
+            handleFinalizarCompra();
+        }, 1500);
     };
 
     return (
+        <>
         <div id="cartModal" className="modal" style={{ display: 'flex' }}>
             <div className="modal-content" style={{ maxWidth: '500px' }}>
                 <span className="close" onClick={onClose}>&times;</span>
@@ -168,6 +173,15 @@ const CartModal = ({
                 )}
             </div>
         </div>
+
+        <AlertModal
+            isOpen={alertModal.isOpen}
+            onClose={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}
+            type={alertModal.type}
+            title={alertModal.title}
+            message={alertModal.message}
+        />
+        </>
     );
 };
 

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getMisCitas, cancelarCita } from '../services/citaService';
+import AlertModal from './AlertModal';
 import '../styles/MisCitas.css';
 
 const MisCitas = ({ currentUser }) => {
   const [citas, setCitas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, type: 'info', title: '', message: '' });
 
   useEffect(() => {
     cargarCitas();
@@ -24,7 +26,7 @@ const MisCitas = ({ currentUser }) => {
       if (result.success) {
         cargarCitas();
       } else {
-        alert(result.message);
+        setAlertModal({ isOpen: true, type: 'error', title: 'Error', message: result.message });
       }
     }
   };
@@ -165,6 +167,14 @@ const MisCitas = ({ currentUser }) => {
           );
         })}
       </div>
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}
+        type={alertModal.type}
+        title={alertModal.title}
+        message={alertModal.message}
+      />
     </div>
   );
 };

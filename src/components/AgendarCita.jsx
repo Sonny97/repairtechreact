@@ -44,14 +44,28 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
     setError('');
   };
 
+  const isStep1Valid = () => formData.tipoServicio !== '';
+  const isStep2Valid = () => formData.electrodomestico !== '' && formData.descripcion.trim().length >= 10;
+  const isStep3Valid = () => formData.fecha !== '' && tecnicosDisponibles.length > 0;
+
   const nextStep = () => {
     if (step === 1 && !formData.tipoServicio) {
       setError('Selecciona un tipo de servicio');
       return;
     }
-    if (step === 2 && !formData.electrodomestico) {
-      setError('Selecciona el electrodoméstico');
-      return;
+    if (step === 2) {
+      if (!formData.electrodomestico) {
+        setError('Selecciona el electrodoméstico');
+        return;
+      }
+      if (!formData.descripcion.trim()) {
+        setError('Describe el problema del electrodoméstico');
+        return;
+      }
+      if (formData.descripcion.trim().length < 10) {
+        setError('La descripción debe tener al menos 10 caracteres');
+        return;
+      }
     }
     if (step === 3 && !formData.fecha) {
       setError('Selecciona una fecha');
@@ -101,25 +115,31 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
     setLoading(false);
   };
 
+  const getStepClass = (stepNumber) => {
+    if (step > stepNumber) return 'completed';
+    if (step === stepNumber) return 'active';
+    return '';
+  };
+
   return (
     <div className="agendar-cita-container">
       <div className="steps-indicator">
-        <div className={`step ${step >= 1 ? 'active' : ''}`}>
-          <div className="step-number">1</div>
+        <div className={`step ${getStepClass(1)}`}>
+          <div className="step-number">{step > 1 ? '✓' : '1'}</div>
           <span>Servicio</span>
         </div>
         <div className={`step-line ${step >= 2 ? 'active' : ''}`}></div>
-        <div className={`step ${step >= 2 ? 'active' : ''}`}>
-          <div className="step-number">2</div>
+        <div className={`step ${getStepClass(2)}`}>
+          <div className="step-number">{step > 2 ? '✓' : '2'}</div>
           <span>Equipo</span>
         </div>
         <div className={`step-line ${step >= 3 ? 'active' : ''}`}></div>
-        <div className={`step ${step >= 3 ? 'active' : ''}`}>
-          <div className="step-number">3</div>
+        <div className={`step ${getStepClass(3)}`}>
+          <div className="step-number">{step > 3 ? '✓' : '3'}</div>
           <span>Fecha</span>
         </div>
         <div className={`step-line ${step >= 4 ? 'active' : ''}`}></div>
-        <div className={`step ${step >= 4 ? 'active' : ''}`}>
+        <div className={`step ${getStepClass(4)}`}>
           <div className="step-number">4</div>
           <span>Confirmar</span>
         </div>
@@ -186,19 +206,23 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
           {step === 2 && (
             <div className="step-content">
               <h2>Información del equipo</h2>
-              <div className="form-group">
-                <label>Electrodoméstico</label>
+              <div className={`form-group ${!formData.electrodomestico && error ? 'has-error' : ''}`}>
+                <label>Electrodoméstico <span className="required">*</span></label>
                 <div className="electro-grid">
                   {electrodomesticos.map(elec => (
                     <div
                       key={elec}
                       className={`electro-card ${formData.electrodomestico === elec ? 'selected' : ''}`}
-                      onClick={() => setFormData({ ...formData, electrodomestico: elec })}
+                      onClick={() => {
+                        setFormData({ ...formData, electrodomestico: elec });
+                        setError('');
+                      }}
                     >
                       <span>{elec}</span>
                     </div>
                   ))}
                 </div>
+                {!formData.electrodomestico && <p className="field-hint">Selecciona un electrodoméstico</p>}
               </div>
               <div className="form-group">
                 <label>Marca (opcional)</label>
@@ -210,15 +234,28 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
                   placeholder="Ej: LG, Samsung, Whirlpool..."
                 />
               </div>
-              <div className="form-group">
-                <label>Descripción del problema</label>
+              <div className={`form-group ${formData.descripcion.trim().length > 0 && formData.descripcion.trim().length < 10 ? 'has-warning' : ''}`}>
+                <label>Descripción del problema <span className="required">*</span></label>
                 <textarea
                   name="descripcion"
                   value={formData.descripcion}
                   onChange={handleChange}
                   placeholder="Describe el problema que presenta el electrodoméstico..."
                   rows="4"
+                  className={formData.descripcion.trim().length >= 10 ? 'valid' : ''}
                 />
+                <div className="field-footer">
+                  <p className="field-hint">
+                    {!formData.descripcion.trim() 
+                      ? 'Describe el problema para continuar'
+                      : formData.descripcion.trim().length < 10 
+                        ? `Mínimo 10 caracteres (${formData.descripcion.trim().length}/10)`
+                        : '✓ Descripción válida'}
+                  </p>
+                  <span className={`char-count ${formData.descripcion.trim().length >= 10 ? 'valid' : ''}`}>
+                    {formData.descripcion.trim().length} caracteres
+                  </span>
+                </div>
               </div>
             </div>
           )}
@@ -267,7 +304,15 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
               </button>
             )}
             {step < 3 ? (
-              <button type="button" className="btn-primary" onClick={nextStep}>
+              <button 
+                type="button" 
+                className="btn-primary" 
+                onClick={nextStep}
+                disabled={
+                  (step === 1 && !isStep1Valid()) ||
+                  (step === 2 && !isStep2Valid())
+                }
+              >
                 Continuar
               </button>
             ) : (

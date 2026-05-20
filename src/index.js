@@ -6,10 +6,10 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+// StrictMode removido temporalmente para evitar doble llamada a APIs en desarrollo
+// En producción esto no afecta. Puedes restaurarlo después.
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App />
 );
 
 reportWebVitals();

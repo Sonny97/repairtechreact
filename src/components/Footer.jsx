@@ -20,9 +20,9 @@ const Footer = () => {
                 <div className="footer-section">
                     <h4>Integrantes</h4>
                     <ul className="team-list">
-                        <li>Carlo</li>
-                        <li>Magno</li>
-                        <li>Cassidy</li>
+                        <li>Paula</li>
+                        <li>Miguel</li>
+                        <li>Victor</li>
                     </ul>
                 </div>
 

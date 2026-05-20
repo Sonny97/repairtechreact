@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getUsuarios, deleteUsuario, updateUsuario, registerUser } from '../services/userService';
+import AlertModal from './AlertModal';
 import '../styles/AdminUsuarios.css';
 
 const AdminUsuarios = () => {
@@ -8,6 +9,7 @@ const AdminUsuarios = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, type: 'info', title: '', message: '' });
   const [formData, setFormData] = useState({
     docType: 'CC',
     docNumber: '',
@@ -38,7 +40,7 @@ const AdminUsuarios = () => {
       if (result.success) {
         cargarUsuarios();
       } else {
-        alert(result.message);
+        setAlertModal({ isOpen: true, type: 'error', title: 'Error', message: result.message });
       }
     }
   };
@@ -53,7 +55,7 @@ const AdminUsuarios = () => {
       setEditingUser(null);
       cargarUsuarios();
     } else {
-      alert(result.message);
+      setAlertModal({ isOpen: true, type: 'error', title: 'Error', message: result.message });
     }
   };
 
@@ -74,7 +76,7 @@ const AdminUsuarios = () => {
       });
       cargarUsuarios();
     } else {
-      alert(result.message);
+      setAlertModal({ isOpen: true, type: 'error', title: 'Error', message: result.message });
     }
   };
 
@@ -128,7 +130,19 @@ const AdminUsuarios = () => {
                       <td><input value={editingUser.documento} onChange={(e) => setEditingUser({...editingUser, documento: e.target.value})} /></td>
                       <td><input value={editingUser.nombre_completo} onChange={(e) => setEditingUser({...editingUser, nombre_completo: e.target.value})} /></td>
                       <td><input value={editingUser.email} onChange={(e) => setEditingUser({...editingUser, email: e.target.value})} /></td>
-                      <td><input value={editingUser.telefono || ''} onChange={(e) => setEditingUser({...editingUser, telefono: e.target.value})} /></td>
+                      <td>
+                        <input 
+                          type="tel"
+                          value={editingUser.telefono || ''} 
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '');
+                            setEditingUser({...editingUser, telefono: value});
+                          }}
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          maxLength="10"
+                        />
+                      </td>
                       <td>
                         <select value={editingUser.rol} onChange={(e) => setEditingUser({...editingUser, rol: e.target.value})}>
                           <option value="cliente">Cliente</option>
@@ -197,7 +211,19 @@ const AdminUsuarios = () => {
               </select>
               <input type="text" placeholder="Número de documento" value={formData.docNumber} onChange={(e) => setFormData({...formData, docNumber: e.target.value})} required />
               <input type="text" placeholder="Nombre completo" value={formData.fullName} onChange={(e) => setFormData({...formData, fullName: e.target.value})} required />
-              <input type="tel" placeholder="Teléfono" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} required />
+              <input 
+                type="tel" 
+                placeholder="Teléfono" 
+                value={formData.phone} 
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '');
+                  setFormData({...formData, phone: value});
+                }}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength="10"
+                required 
+              />
               <input type="email" placeholder="Correo electrónico" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} required />
               <input type="text" placeholder="Dirección" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
               <input type="password" placeholder="Contraseña" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} required />
@@ -215,6 +241,14 @@ const AdminUsuarios = () => {
           </div>
         </div>
       )}
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}
+        type={alertModal.type}
+        title={alertModal.title}
+        message={alertModal.message}
+      />
     </div>
   );
 };

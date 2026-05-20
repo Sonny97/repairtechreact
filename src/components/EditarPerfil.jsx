@@ -34,8 +34,6 @@ const EditarPerfil = ({ currentUser, onUserUpdate }) => {
       direccion: formData.direccion || ''
     };
 
-    console.log('Enviando datos:', userData);
-
     try {
       const result = await updateUsuario(currentUser.id, userData);
       if (result.success) {
@@ -60,7 +58,6 @@ const EditarPerfil = ({ currentUser, onUserUpdate }) => {
         setError(result.message || 'Error al actualizar el perfil');
       }
     } catch (err) {
-      console.error('Error:', err);
       setError('Error al conectar con el servidor');
     } finally {
       setLoading(false);
@@ -114,7 +111,13 @@ const EditarPerfil = ({ currentUser, onUserUpdate }) => {
               type="tel"
               name="telefono"
               value={formData.telefono}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '');
+                setFormData({...formData, telefono: value});
+              }}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength="10"
               placeholder="Opcional"
             />
           </div>

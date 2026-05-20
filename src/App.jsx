@@ -8,6 +8,7 @@ import RegistroModal from './components/RegistroModal';
 import LoginModal from './components/LoginModal';
 import UsuariosModal from './components/UsuariosModal';
 import CartModal from './components/CartModal';
+import AlertModal from './components/AlertModal';
 import AdminLayout from './components/AdminLayout';
 import ClienteDashboard from './components/ClienteDashboard';
 import TecnicoDashboard from './components/TecnicoDashboard';
@@ -37,6 +38,22 @@ function App() {
   const [currentShipping, setCurrentShipping] = useState(0);
   const [currentCoupon, setCurrentCoupon] = useState({ code: null, discountPercent: 0 });
   const [currentPayment, setCurrentPayment] = useState('card');
+
+  // Estado para AlertModal
+  const [alertModal, setAlertModal] = useState({
+    isOpen: false,
+    type: 'info',
+    title: '',
+    message: ''
+  });
+
+  const showAlert = (type, message, title = '') => {
+    setAlertModal({ isOpen: true, type, title, message });
+  };
+
+  const closeAlert = () => {
+    setAlertModal(prev => ({ ...prev, isOpen: false }));
+  };
 
   const [usuariosContacto, setUsuariosContacto] = useState([
     {
@@ -102,7 +119,7 @@ function App() {
           setIsClienteView(false);
         }
       } catch (e) {
-        console.error('Error al cargar usuario:', e);
+        // Error al cargar usuario
       }
     }
   }, []);
@@ -130,11 +147,11 @@ function App() {
 
   const handleRegister = (newAccount) => {
     if (accounts.find(acc => acc.email === newAccount.email)) {
-      alert('Ya existe una cuenta con ese correo.');
+      showAlert('error', 'Ya existe una cuenta con ese correo.');
       return false;
     }
     setAccounts(prev => [...prev, newAccount]);
-    alert('Registro exitoso. Ya puedes iniciar sesión.');
+    showAlert('success', 'Ya puedes iniciar sesión.', 'Registro exitoso');
     cerrarModal('registroModal');
     return true;
   };
@@ -143,7 +160,7 @@ function App() {
   const handleLogin = (userData) => {
     setCurrentUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
-    alert(`Bienvenido ${userData.nombre_completo || userData.email}`);
+    showAlert('success', `Bienvenido ${userData.nombre_completo || userData.email}`);
     cerrarModal('loginModal');
     
     // Redirigir según el rol
@@ -169,7 +186,7 @@ function App() {
     setIsTecnicoView(false);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    alert('Sesión cerrada correctamente');
+    showAlert('info', 'Sesión cerrada correctamente');
   };
 
   // Actualizar datos del usuario (para edición de perfil)
@@ -226,7 +243,7 @@ function App() {
 
   const finalizarCompra = () => {
     if (carrito.length === 0) {
-      alert("El carrito está vacío.");
+      showAlert('warning', 'El carrito está vacío.');
       return;
     }
     const orden = {
@@ -236,8 +253,7 @@ function App() {
       payment: currentPayment,
       user: currentUser ? { id: currentUser.id, email: currentUser.email } : null
     };
-    console.log("Orden enviada:", orden);
-    alert("Compra realizada. Revisa la consola para detalles.");
+    showAlert('success', 'Compra realizada exitosamente.', '¡Gracias por tu compra!');
     setCarrito([]);
     setCurrentCoupon({ code: null, discountPercent: 0 });
     setCurrentShipping(0);
@@ -304,7 +320,7 @@ function App() {
       />
 
       <main>
-        <Inicio />
+        <Inicio onSolicitarServicio={() => abrirModal('loginModal')} />
         <Servicios onMantenimientoClick={() => abrirModal('usuariosModal')} />
         <Productos 
           productos={listaInsumos} 
@@ -326,6 +342,7 @@ function App() {
         isOpen={modals.loginModal} 
         onClose={() => cerrarModal('loginModal')}
         onLogin={handleLogin}
+        onSwitchToRegister={() => abrirModal('registroModal')}
       />
       
       <UsuariosModal 
@@ -347,6 +364,14 @@ function App() {
         currentPayment={currentPayment}
         onPaymentChange={setCurrentPayment}
         onFinalizarCompra={finalizarCompra}
+      />
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={closeAlert}
+        type={alertModal.type}
+        title={alertModal.title}
+        message={alertModal.message}
       />
     </div>
   );
