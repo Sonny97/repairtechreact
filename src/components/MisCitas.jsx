@@ -10,6 +10,7 @@ const MisCitas = ({ currentUser }) => {
 
   useEffect(() => {
     cargarCitas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cargarCitas = async () => {
@@ -46,14 +47,19 @@ const MisCitas = ({ currentUser }) => {
   const formatearFecha = (fechaISO) => {
     if (!fechaISO) return 'Fecha no disponible';
     
-    const fecha = new Date(fechaISO);
+    let fecha;
+    if (typeof fechaISO === 'string') {
+      const datePart = fechaISO.split('T')[0];
+      const [year, month, day] = datePart.split('-').map(Number);
+      fecha = new Date(year, month - 1, day);
+    } else {
+      fecha = new Date(fechaISO);
+    }
     
-    // Formato: 15 de mayo de 2026
     const opciones = {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-      timeZone: 'America/Bogota'
+      day: 'numeric'
     };
     
     return fecha.toLocaleDateString('es-ES', opciones);
@@ -78,7 +84,7 @@ const MisCitas = ({ currentUser }) => {
     h = h % 12;
     h = h === 0 ? 12 : h;
     
-    return `${h}:${minutes} ${ampm}`;
+    return `${h}:${minutes}`;
   };
 
   // Función para obtener el nombre del servicio en español
@@ -114,9 +120,14 @@ const MisCitas = ({ currentUser }) => {
       <h2>Mis Citas</h2>
       <div className="citas-list">
         {citas.map(cita => {
+          console.log("cita:",cita.fecha);
+          
           const estado = getEstadoBadge(cita.estado);
           const fechaFormateada = formatearFecha(cita.fecha);
           const horaFormateada = formatearHora(cita.hora);
+
+          console.log(fechaFormateada);
+          console.log(horaFormateada);
           
           return (
             <div key={cita.id} className="cita-card">

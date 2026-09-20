@@ -246,13 +246,6 @@ function App() {
       showAlert('warning', 'El carrito está vacío.');
       return;
     }
-    const orden = {
-      items: carrito.map(i => ({ nombre: i.nombre, cantidad: i.cantidad, precio: i.precio })),
-      shipping: currentShipping,
-      coupon: currentCoupon.code || null,
-      payment: currentPayment,
-      user: currentUser ? { id: currentUser.id, email: currentUser.email } : null
-    };
     showAlert('success', 'Compra realizada exitosamente.', '¡Gracias por tu compra!');
     setCarrito([]);
     setCurrentCoupon({ code: null, discountPercent: 0 });

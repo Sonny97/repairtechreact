@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getTecnicosDisponibles, crearCita } from '../services/citaService';
 import '../styles/AgendarCita.css';
 
@@ -24,20 +24,20 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
 
   const electrodomesticos = ['Lavadora', 'Nevera', 'Lavadora y Nevera'];
 
-  useEffect(() => {
-    if (step === 3 && formData.fecha && formData.tipoServicio) {
-      verificarDisponibilidadTecnicos();
-    }
-  }, [step, formData.fecha, formData.tipoServicio]);
-
-  const verificarDisponibilidadTecnicos = async () => {
+  const verificarDisponibilidadTecnicos = useCallback(async () => {
     setTecnicosCargando(true);
     const result = await getTecnicosDisponibles(formData.fecha, formData.tipoServicio);
     if (result.success) {
       setTecnicosDisponibles(result.data);
     }
     setTecnicosCargando(false);
-  };
+  }, [formData.fecha, formData.tipoServicio]);
+
+  useEffect(() => {
+    if (step === 3 && formData.fecha && formData.tipoServicio) {
+      verificarDisponibilidadTecnicos();
+    }
+  }, [step, formData.fecha, formData.tipoServicio, verificarDisponibilidadTecnicos]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,7 +46,6 @@ const AgendarCita = ({ currentUser, onCitaAgendada }) => {
 
   const isStep1Valid = () => formData.tipoServicio !== '';
   const isStep2Valid = () => formData.electrodomestico !== '' && formData.descripcion.trim().length >= 10;
-  const isStep3Valid = () => formData.fecha !== '' && tecnicosDisponibles.length > 0;
 
   const nextStep = () => {
     if (step === 1 && !formData.tipoServicio) {

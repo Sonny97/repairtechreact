@@ -12,6 +12,7 @@ const MisCitasTecnico = ({ currentUser }) => {
 
   useEffect(() => {
     cargarCitas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cargarCitas = async () => {
@@ -45,15 +46,6 @@ const MisCitasTecnico = ({ currentUser }) => {
     return estados[estado] || { class: 'status-pendiente', text: estado, icon: '?' };
   };
 
-  const getProximoEstado = (estadoActual) => {
-    const estados = {
-      pendiente: 'confirmada',
-      confirmada: 'en_proceso',
-      en_proceso: 'completada'
-    };
-    return estados[estadoActual] || null;
-  };
-
   const getBotonEstado = (estadoActual) => {
     const opciones = {
       pendiente: { label: 'Confirmar', nuevoEstado: 'confirmada', color: 'btn-confirmar' },
@@ -65,8 +57,17 @@ const MisCitasTecnico = ({ currentUser }) => {
 
   const formatearFecha = (fechaISO) => {
     if (!fechaISO) return 'Fecha no disponible';
-    const fecha = new Date(fechaISO);
-    const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Bogota' };
+    
+    let fecha;
+    if (typeof fechaISO === 'string') {
+      const datePart = fechaISO.split('T')[0];
+      const [year, month, day] = datePart.split('-').map(Number);
+      fecha = new Date(year, month - 1, day);
+    } else {
+      fecha = new Date(fechaISO);
+    }
+    
+    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
     return fecha.toLocaleDateString('es-ES', opciones);
   };
 

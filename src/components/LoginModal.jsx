@@ -75,7 +75,7 @@ const LoginModal = ({ isOpen, onClose, onLogin, onSwitchToRegister }) => {
                     </button>
                 </form>
                 <div className="modal-footer-link">
-                    <p>¿No tienes cuenta? <a href="#" onClick={handleSwitchToRegister}>Regístrate aquí</a></p>
+                    <p>¿No tienes cuenta? <a href="#!" onClick={handleSwitchToRegister}>Regístrate aquí</a></p>
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ const AdminDashboard = ({ currentUser }) => {
     crecimientoMensual: []
   });
   const [loading, setLoading] = useState(true);
-  const [fechaActual, setFechaActual] = useState(new Date());
+  const [fechaActual] = useState(new Date());
 
   useEffect(() => {
     cargarEstadisticas();
