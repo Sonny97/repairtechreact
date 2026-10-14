@@ -83,8 +83,8 @@ Ver [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) para la documentació
 
 | Workflow | Trigger | Descripción |
 |----------|---------|-------------|
-| `e2e-tests.yml` | Push/PR a develop, release/*, master, main | Ejecuta las 3 pruebas E2E con Selenium en Chrome headless |
-| `branch-protection.yml` | Push/PR a develop, release/*, master, main | Solo notifica y valida convenciones (no bloquea) |
+| `e2e-tests.yml` | PR hacia develop, master, main, release/* | Ejecuta las 3 pruebas E2E con Selenium en Chrome headless |
+| `branch-protection.yml` | PR hacia develop, master, main, release/* | Solo notifica y valida convenciones (no bloquea) |
 
 ### Ramas protegidas
 
