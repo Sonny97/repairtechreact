@@ -84,7 +84,7 @@ Ver [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) para la documentació
 | Workflow | Trigger | Descripción |
 |----------|---------|-------------|
 | `e2e-tests.yml` | Push/PR a develop, release/*, master, main | Ejecuta las 3 pruebas E2E con Selenium en Chrome headless |
-| `branch-protection.yml` | Push/PR a develop, release/*, master, main | Bloquea push directo y valida nombres de rama |
+| `branch-protection.yml` | Push/PR a develop, release/*, master, main | Solo notifica y valida convenciones (no bloquea) |
 
 ### Ramas protegidas
 
@@ -97,7 +97,7 @@ Solo se acepta push a través de Pull Requests desde ramas autorizadas:
 - `refactor/*` — Refactorización
 - `release/*` — Ramas de liberación
 
-Ramas que requieren PR: `main`, `master`, `develop`, `release/*`
+Ramas que deberían usar PR: `main`, `master`, `develop`, `release/*`
 
 ---
 
