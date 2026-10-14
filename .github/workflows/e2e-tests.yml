@@ -73,8 +73,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      checks: write
-      pull-requests: write
     env:
       BASE_URL: http://localhost:3002
 
@@ -154,12 +152,3 @@ jobs:
             e2e/reports/
             frontend.log
           retention-days: 30
-
-      - name: Publish E2E results in PR checks
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          files: e2e/reports/junit.xml
-          check_name: E2E Test Results
-          comment_mode: always
-        continue-on-error: true
