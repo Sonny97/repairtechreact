@@ -1,116 +1,165 @@
-name: E2E Tests - Selenium
+name: Frontend Tests - Unit & E2E (Selenium)
 
+# Se ejecuta en PRs (merge) hacia develop o master, solo si la rama origen es una permitida.
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches: [develop, master, main, release/*]
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [develop, master]
 
 jobs:
-  e2e-tests:
-    name: Run E2E Tests with Selenium
+  unit-tests:
+    name: Unit Tests (React Testing Library)
+    if: >-
+      startsWith(github.head_ref, 'release/') ||
+      startsWith(github.head_ref, 'feature/') ||
+      startsWith(github.head_ref, 'feat/') ||
+      startsWith(github.head_ref, 'hotfix/') ||
+      startsWith(github.head_ref, 'refactor/')
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Run unit tests
+        run: |
+          mkdir -p reports/unit
+          npx react-scripts test --watchAll=false --ci --coverage \
+            --json --outputFile=reports/unit/results.json 2>&1 | tee reports/unit/output.txt
+
+      - name: Unit summary
+        if: always()
+        run: |
+          node -e '
+          const fs = require("fs");
+          let md = "## Unit Test Results\n\n";
+          try {
+            const r = JSON.parse(fs.readFileSync("reports/unit/results.json", "utf8"));
+            md += `**${r.success ? "✅ PASSED" : "❌ FAILED"}** — ${r.numPassedTests}/${r.numTotalTests} tests, ${r.numPassedTestSuites}/${r.numTotalTestSuites} suites\n`;
+            const failed = r.testResults.flatMap(s => s.assertionResults.filter(t => t.status === "failed"));
+            for (const t of failed) md += `- ❌ ${t.fullName}\n`;
+          } catch (e) { md += "No se generó results.json.\n"; }
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
+          '
+
+      - name: Upload unit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports-${{ github.run_number }}
+          path: |
+            reports/unit/
+            coverage/
+          retention-days: 30
+
+  e2e-tests:
+    name: E2E Tests (Selenium)
+    if: >-
+      startsWith(github.head_ref, 'release/') ||
+      startsWith(github.head_ref, 'feature/') ||
+      startsWith(github.head_ref, 'feat/') ||
+      startsWith(github.head_ref, 'hotfix/') ||
+      startsWith(github.head_ref, 'refactor/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+    env:
+      BASE_URL: http://localhost:3002
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
 
       - name: Install frontend dependencies
         run: npm install --legacy-peer-deps
         env:
           NODE_OPTIONS: --max-old-space-size=4096
 
-      - name: Install E2E test dependencies
+      - name: Install E2E dependencies
+        working-directory: e2e
         run: npm install --legacy-peer-deps
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
 
-      - name: Setup Chrome and ChromeDriver
-        run: |
-          wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i chrome.deb || sudo apt-get -f install -y
-          rm chrome.deb
-          google-chrome --version
-
-      - name: Kill any process on port 3002
-        run: sudo lsof -ti:3002 | xargs -r sudo kill -9 || true
+      - name: Chrome version
+        run: google-chrome --version
 
       - name: Start frontend server
         run: |
-          export PORT=3002
-          npm start &
-          echo "SERVER_PID=$!" >> $GITHUB_ENV
-          echo "Frontend server started"
+          PORT=3002 BROWSER=none nohup npx react-scripts start > frontend.log 2>&1 &
+          echo "Frontend server starting"
 
       - name: Wait for frontend to be ready
         run: |
-          for i in {1..60}; do
-            if curl -s -o /dev/null -w "%{http_code}" http://localhost:3002 2>/dev/null | grep -qE "200|302"; then
-              echo "Frontend is ready!"
-              break
-            fi
-            if [ $i -eq 60 ]; then
-              echo "Frontend failed to start after 60 attempts"
-              exit 1
+          for i in $(seq 1 60); do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:3002 | grep -qE "200|302"; then
+              echo "Frontend is ready!"; exit 0
             fi
             sleep 3
           done
+          echo "Frontend failed to start"; cat frontend.log; exit 1
 
-      - name: Run E2E Tests - CP-01
-        run: npm run test:cp01 -- --forceExit 2>&1 | tee cp01-output.txt
-        continue-on-error: true
-
-      - name: Run E2E Tests - CP-02
-        run: npm run test:cp02 -- --forceExit 2>&1 | tee cp02-output.txt
-        continue-on-error: true
-
-      - name: Run E2E Tests - CP-03
-        run: npm run test:cp03 -- --forceExit 2>&1 | tee cp03-output.txt
-        continue-on-error: true
-
-      - name: Generate test report
-        if: always()
+      - name: Run E2E tests (CP-01, CP-02, CP-03)
+        working-directory: e2e
         run: |
           mkdir -p reports
-          echo "<html><head><title>E2E Test Report</title>" > reports/report.html
-          echo "<style>body{font-family:Arial;padding:20px} pre{background:#f4f4f4;padding:10px;overflow-x:auto}</style>" >> reports/report.html
-          echo "</head><body><h1>RepairTech E2E Test Results</h1>" >> reports/report.html
-          echo "<h2>$(date)</h2>" >> reports/report.html
-          echo "<h3>CP-01 - Navegación</h3><pre>" >> reports/report.html
-          grep -E "PASS|FAIL|✓|✗|passed|failed" cp01-output.txt 2>/dev/null | tail -10 >> reports/report.html || echo "No output" >> reports/report.html
-          echo "</pre><h3>CP-02 - Contacto</h3><pre>" >> reports/report.html
-          grep -E "PASS|FAIL|✓|✗|passed|failed" cp02-output.txt 2>/dev/null | tail -10 >> reports/report.html || echo "No output" >> reports/report.html
-          echo "</pre><h3>CP-03 - Login</h3><pre>" >> reports/report.html
-          grep -E "PASS|FAIL|✓|✗|passed|failed" cp03-output.txt 2>/dev/null | tail -10 >> reports/report.html || echo "No output" >> reports/report.html
-          echo "</pre></body></html>" >> reports/report.html
+          npx jest --config=jest.config.js --ci --verbose \
+            --json --outputFile=reports/results.json 2>&1 | tee reports/e2e-output.txt
 
-      - name: Upload test reports
+      - name: E2E summary
+        if: always()
+        working-directory: e2e
+        run: |
+          node -e '
+          const fs = require("fs");
+          let md = "## E2E Test Results (Selenium)\n\n";
+          try {
+            const r = JSON.parse(fs.readFileSync("reports/results.json", "utf8"));
+            md += `**${r.success ? "✅ PASSED" : "❌ FAILED"}**\n\n`;
+            md += "| Metric | Value |\n|---|---|\n";
+            md += `| Total | ${r.numTotalTests} |\n| Passed | ${r.numPassedTests} |\n| Failed | ${r.numFailedTests} |\n| Skipped | ${r.numPendingTests} |\n\n`;
+            for (const s of r.testResults) {
+              md += `### ${s.status === "passed" ? "✅" : "❌"} ${s.name.split("/").pop()}\n\n| Test | Status | ms |\n|---|---|---|\n`;
+              for (const t of s.assertionResults)
+                md += `| ${t.title} | ${t.status === "passed" ? "✅ passed" : t.status === "failed" ? "❌ failed" : "⏭ " + t.status} | ${t.duration ?? "-"} |\n`;
+              const fm = s.assertionResults.filter(t => t.status === "failed");
+              for (const t of fm) md += `\n<details><summary>❌ ${t.title}</summary>\n\n\`\`\`\n${(t.failureMessages || []).join("\n").slice(0, 1500)}\n\`\`\`\n</details>\n`;
+              md += "\n";
+            }
+          } catch (e) { md += "No se generó results.json (las pruebas no llegaron a ejecutarse).\n"; }
+          md += "\n📎 Reporte HTML completo en el artefacto **e2e-test-reports**.\n";
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
+          '
+
+      - name: Upload E2E reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-test-reports-${{ github.run_number }}
           path: |
-            reports/
-            cp01-output.txt
-            cp02-output.txt
-            cp03-output.txt
+            e2e/reports/
+            frontend.log
           retention-days: 30
 
-      - name: Stop frontend server
+      - name: Publish E2E results in PR checks
         if: always()
-        run: sudo lsof -ti:3002 | xargs -r sudo kill -9 || true
-
-      - name: Test Summary
-        if: always()
-        run: |
-          echo "## E2E Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Test Case | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| CP-01: Navegación | $([ -f cp01-output.txt ] && echo '✅ Executed' || echo '❌ No output') |" >> $GITHUB_STEP_SUMMARY
-          echo "| CP-02: Contacto | $([ -f cp02-output.txt ] && echo '✅ Executed' || echo '❌ No output') |" >> $GITHUB_STEP_SUMMARY
-          echo "| CP-03: Login | $([ -f cp03-output.txt ] && echo '✅ Executed' || echo '❌ No output') |" >> $GITHUB_STEP_SUMMARY
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: e2e/reports/junit.xml
+          check_name: E2E Test Results
+          comment_mode: always
+        continue-on-error: true
