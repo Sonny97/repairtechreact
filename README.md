@@ -1,77 +1,113 @@
-# Getting Started with Create React App
+# RepairTech — Frontend React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Proyecto PPI — Reparación de electrodomésticos**
 
-## Available Scripts
 - Miguel David Montenegro
 - Paula Andrea Rosero Colorado
 - Victor Manuel Florez Taborda
 
+---
 
+## Descripción
 
-## Available Scripts
+RepairTech es una aplicación web para la gestión de servicios técnicos de electrodomésticos. Permite a los clientes agendar citas de reparación, consultar productos/repuestos y comunicarse con la empresa.
 
-In the project directory, you can run:
+**Frontend:** React 19 + Vite
+**Backend:** Node.js + Express + PostgreSQL
+**Puerto por defecto:** `http://localhost:3002`
+
+---
+
+## Scripts disponibles
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Ejecuta la aplicación en modo desarrollo.
+Abre [http://localhost:3002](http://localhost:3002) en el navegador.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ejecuta las pruebas unitarias con React Testing Library.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Genera una versión de producción en la carpeta `build/`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Pruebas E2E con Selenium
 
-### `npm run eject`
+### Ubicación
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+e2e/
+├── tests/
+│   ├── CP-01.spec.js    ← Navegación y elementos
+│   ├── CP-02.spec.js    ← Formulario de contacto
+│   └── CP-03.spec.js    ← Autenticación de usuario
+├── package.json
+├── jest.config.js
+└── jest.setup.js
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Ejecutar pruebas E2E
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+cd e2e
+npm install
+# En otra terminal: npm start (desde la raíz)
+npm test
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Más información
 
-## Learn More
+Ver [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) para la documentación completa de las pruebas.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Documentación de pruebas
 
-### Code Splitting
+| Documento | Descripción |
+|-----------|-------------|
+| [docs/testing/01-caja-negra.md](./docs/testing/01-caja-negra.md) | Pruebas de caja negra del backend (Jest) |
+| [docs/testing/02-caja-blanca.md](./docs/testing/02-caja-blanca.md) | Pruebas de caja blanca del backend (Jest) |
+| [docs/testing/03-e2e-selenium.md](./docs/testing/03-e2e-selenium.md) | Pruebas E2E del frontend (Selenium) |
+| [e2e/TESTRAIL-casos.md](./e2e/TESTRAIL-casos.md) | Casos de prueba documentados en formato TestRail |
+| [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) | Guía de estudio para la presentación |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## CI/CD — GitHub Actions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Workflows
 
-### Making a Progressive Web App
+| Workflow | Trigger | Descripción |
+|----------|---------|-------------|
+| `e2e-tests.yml` | Push/PR a develop, release/*, master, main | Ejecuta las 3 pruebas E2E con Selenium en Chrome headless |
+| `branch-protection.yml` | Push/PR a develop, release/*, master, main | Bloquea push directo y valida nombres de rama |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Ramas protegidas
 
-### Advanced Configuration
+Solo se acepta push a través de Pull Requests desde ramas autorizadas:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- `feature/*` — Nuevas funcionalidades
+- `feat/*` — Forma corta de feature
+- `hotfix/*` — Correcciones urgentes
+- `fix/*` — Correcciones de bugs
+- `refactor/*` — Refactorización
+- `release/*` — Ramas de liberación
 
-### Deployment
+Ramas que requieren PR: `main`, `master`, `develop`, `release/*`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Herramientas y versiones
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+| Herramienta | Versión |
+|-------------|---------|
+| React | 19.2.4 |
+| Node.js | 18+ |
+| Selenium WebDriver | 4.28.1 |
+| ChromeDriver | 130.0.0 |
+| Jest | 29.7.0 |
+| npm | 10+ |

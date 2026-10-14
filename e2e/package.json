@@ -1,0 +1,24 @@
+{
+  "name": "repairtech-e2e",
+  "version": "1.0.0",
+  "description": "Pruebas E2E con Selenium para RepairTech",
+  "scripts": {
+    "test": "jest --config=jest.config.js",
+    "test:cp01": "jest --config=jest.config.js tests/CP-01.spec.js",
+    "test:cp02": "jest --config=jest.config.js tests/CP-02.spec.js",
+    "test:cp03": "jest --config=jest.config.js tests/CP-03.spec.js",
+    "test:headed": "jest --config=jest.config.js --headed",
+    "test:report": "jest --config=jest.config.js --allure-generate"
+  },
+  "dependencies": {
+    "@jest/globals": "^29.7.0",
+    "chromedriver": "^130.0.0",
+    "geckodriver": "^4.0.4",
+    "jest": "^29.7.0",
+    "jest-allure": "^0.0.1",
+    "selenium-webdriver": "^4.28.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  }
+}

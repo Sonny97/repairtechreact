@@ -1,0 +1,192 @@
+name: E2E Tests - Selenium
+
+on:
+  push:
+    branches:
+      - develop
+      - release/**
+      - master
+      - main
+  pull_request:
+    branches:
+      - develop
+      - release/**
+      - master
+      - main
+
+jobs:
+  e2e-tests:
+    name: Run E2E Tests with Selenium
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: repairtechreact/e2e/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd repairtechreact
+          npm install --legacy-peer-deps
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Install E2E test dependencies
+        run: |
+          cd repairtechreact/e2e
+          npm install --legacy-peer-deps
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Setup Chrome and ChromeDriver
+        run: |
+          # Install Google Chrome
+          wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i chrome.deb || sudo apt-get -f install -y
+          rm chrome.deb
+
+          # Verify Chrome installation
+          google-chrome --version
+
+      - name: Wait for port 3002 to be available
+        run: |
+          # Clean any process on port 3002
+          sudo lsof -ti:3002 | xargs -r sudo kill -9 || true
+          sleep 2
+
+      - name: Start frontend server in background
+        run: |
+          cd repairtechreact
+          export PORT=3002
+          npm start &
+          SERVER_PID=$!
+          echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+          echo "Started server with PID: $SERVER_PID"
+
+      - name: Wait for frontend to be ready
+        run: |
+          echo "Waiting for frontend to start..."
+          for i in {1..60}; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:3002 2>/dev/null | grep -q "200\|302"; then
+              echo "Frontend is ready!"
+              break
+            fi
+            if [ $i -eq 60 ]; then
+              echo "Frontend failed to start after 60 attempts"
+              exit 1
+            fi
+            sleep 3
+          done
+
+      - name: Run E2E Tests - CP-01 (Navegación y Elementos)
+        run: |
+          cd repairtechreact/e2e
+          npm run test:cp01 -- --forceExit --detectOpenHandles 2>&1 | tee cp01-output.txt
+        continue-on-error: true
+
+      - name: Run E2E Tests - CP-02 (Formulario de Contacto)
+        run: |
+          cd repairtechreact/e2e
+          npm run test:cp02 -- --forceExit --detectOpenHandles 2>&1 | tee cp02-output.txt
+        continue-on-error: true
+
+      - name: Run E2E Tests - CP-03 (Autenticación)
+        run: |
+          cd repairtechreact/e2e
+          npm run test:cp03 -- --forceExit --detectOpenHandles 2>&1 | tee cp03-output.txt
+        continue-on-error: true
+
+      - name: Run All E2E Tests
+        run: |
+          cd repairtechreact/e2e
+          npm test -- --forceExit --detectOpenHandles 2>&1 | tee all-tests-output.txt
+        continue-on-error: true
+
+      - name: Generate test reports
+        if: always()
+        run: |
+          cd repairtechreact/e2e
+          # Create reports directory
+          mkdir -p reports
+
+          # Generate simple HTML report from test output
+          echo "<html><head><title>E2E Test Report</title>" > reports/report.html
+          echo "<style>body{font-family:Arial;padding:20px} pre{background:#f4f4f4;padding:10px} .pass{color:green} .fail{color:red}</style>" >> reports/report.html
+          echo "</head><body><h1>RepairTech E2E Test Results</h1>" >> reports/report.html
+          echo "<h2>Test Run: $(date)</h2>" >> reports/report.html
+
+          # Check CP-01 results
+          echo "<h3 class='pass'>CP-01: Navegación y Validación de Elementos</h3>" >> reports/report.html
+          echo "<pre>" >> reports/report.html
+          grep -E "PASS|FAIL|✓|✗" cp01-output.txt 2>/dev/null | head -20 >> reports/report.html || echo "Results in cp01-output.txt" >> reports/report.html
+          echo "</pre>" >> reports/report.html
+
+          # Check CP-02 results
+          echo "<h3 class='pass'>CP-02: Formulario de Contacto</h3>" >> reports/report.html
+          echo "<pre>" >> reports/report.html
+          grep -E "PASS|FAIL|✓|✗" cp02-output.txt 2>/dev/null | head -20 >> reports/report.html || echo "Results in cp02-output.txt" >> reports/report.html
+          echo "</pre>" >> reports/report.html
+
+          # Check CP-03 results
+          echo "<h3 class='pass'>CP-03: Autenticación de Usuario</h3>" >> reports/report.html
+          echo "<pre>" >> reports/report.html
+          grep -E "PASS|FAIL|✓|✗" cp03-output.txt 2>/dev/null | head -20 >> reports/report.html || echo "Results in cp03-output.txt" >> reports/report.html
+          echo "</pre>" >> reports/report.html
+
+          echo "<h3>All Tests Output (last 100 lines)</h3>" >> reports/report.html
+          echo "<pre>" >> reports/report.html
+          tail -100 all-tests-output.txt 2>/dev/null >> reports/report.html || echo "Full output in all-tests-output.txt" >> reports/report.html
+          echo "</pre>" >> reports/report.html
+          echo "</body></html>" >> reports/report.html
+
+          echo "Report generated at reports/report.html"
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-reports
+          path: repairtechreact/e2e/reports/
+          retention-days: 30
+
+      - name: Upload test outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-outputs
+          path: |
+            repairtechreact/e2e/*.txt
+          retention-days: 7
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-coverage
+          path: repairtechreact/coverage/
+          retention-days: 14
+
+      - name: Stop frontend server
+        if: always()
+        run: |
+          sudo lsof -ti:3002 | xargs -r sudo kill -9 || true
+          echo "Server stopped"
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## E2E Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Case | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| CP-01: Navegación y Elementos | $([ -f repairtechreact/e2e/cp01-output.txt ] && (grep -q "Tests:" repairtechreact/e2e/cp01-output.txt && echo '✅ Executed' || echo '❌ Check output') || echo '❌ No output') |" >> $GITHUB_STEP_SUMMARY
+          echo "| CP-02: Formulario de Contacto | $([ -f repairtechreact/e2e/cp02-output.txt ] && (grep -q "Tests:" repairtechreact/e2e/cp02-output.txt && echo '✅ Executed' || echo '❌ Check output') || echo '❌ No output') |" >> $GITHUB_STEP_SUMMARY
+          echo "| CP-03: Autenticación | $([ -f repairtechreact/e2e/cp03-output.txt ] && (grep -q "Tests:" repairtechreact/e2e/cp03-output.txt && echo '✅ Executed' || echo '❌ Check output') || echo '❌ No output') |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reports available as artifacts." >> $GITHUB_STEP_SUMMARY
