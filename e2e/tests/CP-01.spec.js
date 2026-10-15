@@ -245,7 +245,7 @@ describe('CP-01: Navegación y Validación de Elementos - Página Principal', ()
     const cardsConId = await driver.findElements(By.css('#cardMantenimiento'));
     if (cardsConId.length > 0) {
       await driver.executeScript('arguments[0].scrollIntoView(true);', cardsConId[0]);
-      await driver.actions({ bridge: true }).moveToElement(cardsConId[0]).perform();
+      await driver.executeScript('arguments[0].dispatchEvent(new MouseEvent("mouseenter", {bubbles: true}));', cardsConId[0]);
       await driver.sleep(500);
       console.log('  Hover realizado sobre card de mantenimiento');
     }

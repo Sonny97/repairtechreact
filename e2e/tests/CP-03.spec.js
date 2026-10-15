@@ -43,6 +43,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       true,
       'Debe existir un botón o enlace para abrir el login'
     );
+    await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+    await driver.sleep(500);
     await botonesLogin[0].click();
     await driver.sleep(1500);
 
@@ -76,6 +78,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -130,6 +134,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -186,6 +192,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -243,6 +251,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -285,6 +295,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -345,6 +357,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -447,6 +461,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -513,6 +529,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
@@ -587,6 +605,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       );
       if (enlacesLogin.length > 0) await enlacesLogin[0].click();
     } else {
+      await driver.executeScript('arguments[0].scrollIntoView(true);', botonesLogin[0]);
+      await driver.sleep(500);
       await botonesLogin[0].click();
     }
     await driver.sleep(1000);
