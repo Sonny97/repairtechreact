@@ -242,7 +242,7 @@ describe('CP-02: Formulario de Contacto - Llenado y Validación', () => {
     await driver.sleep(2000);
 
     // STEP 26: Verificar que aparece el modal de éxito (AlertModal)
-    const alertModal = await driver.findElement(By.css('.alert-modal, .modal'));
+    const alertModal = await driver.findElement(By.css('.alert-modal-overlay, .alert-modal-content'));
     assert.strictEqual(
       alertModal !== null,
       true,
@@ -487,7 +487,7 @@ describe('CP-02: Formulario de Contacto - Llenado y Validación', () => {
     const textoHeading = await headingContacto.getText();
     console.log(`  Heading de contacto: "${textoHeading}"`);
     assert.strictEqual(
-      textoContacto.length > 0,
+      textoHeading.length > 0,
       true,
       'El heading de contacto debe tener texto'
     );
