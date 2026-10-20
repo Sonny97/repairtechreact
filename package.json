@@ -23,7 +23,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "vite"
+    "dev": "vite",
+    "cy:open": "cypress open --e2e",
+    "cy:run": "cypress run --e2e --browser electron"
   },
   "eslintConfig": {
     "extends": [

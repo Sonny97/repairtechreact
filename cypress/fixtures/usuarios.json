@@ -1,0 +1,17 @@
+{
+  "invalido": {
+    "email": "noexiste@repairtech.com",
+    "password": "claveIncorrecta"
+  },
+  "cliente": {
+    "email": "cliente@repairtech.com",
+    "password": "Cliente123",
+    "respuesta": {
+      "id": 7,
+      "nombre_completo": "Cliente Prueba",
+      "email": "cliente@repairtech.com",
+      "telefono": "3001234567",
+      "rol": "cliente"
+    }
+  }
+}
