@@ -9,10 +9,10 @@
  * - Aserciones de elementos presentes (header, footer, cards, iconos, menús)
  * - Aserciones de URL
  * - Aserciones de estilos CSS (font-family, colors, background)
- * - Comandos de tipo actions (click, hover, scroll)
+ * - Comandos de tipo actions (Actions API de Selenium: move, click, pause, scroll)
  * - Validación de dropdown/menús desplegables
  *
- * URL base: http://localhost:3002
+ * URL del caso: http://localhost:3002/ (página principal)
  */
 
 const { By, Key, until } = require('selenium-webdriver');
@@ -104,7 +104,7 @@ describe('CP-01: Navegación y Validación de Elementos - Página Principal', ()
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
       const tituloCard = await card.findElement(By.css('h3'));
-      const textoTitulo = await tituloCard.getText();
+      const textoTitulo = (await tituloCard.getAttribute('textContent')).trim();
       assert.strictEqual(
         textoTitulo.length > 0,
         true,
@@ -125,7 +125,7 @@ describe('CP-01: Navegación y Validación de Elementos - Página Principal', ()
     // STEP 12: Verificar que la sección de servicios tenga un título
     const seccionServicios = await driver.findElement(By.id('servicios'));
     const tituloSeccion = await seccionServicios.findElement(By.css('h2'));
-    const textoTituloSeccion = await tituloSeccion.getText();
+    const textoTituloSeccion = (await tituloSeccion.getAttribute('textContent')).trim();
     assert.strictEqual(
       textoTituloSeccion.includes('Servicio'),
       true,
@@ -241,18 +241,27 @@ describe('CP-01: Navegación y Validación de Elementos - Página Principal', ()
     await driver.executeScript('arguments[0].scrollIntoView(true);', seccionServicios);
     await driver.sleep(1000);
 
-    // STEP 26: Hacer hover sobre la card de mantenimiento (card con id)
+    // STEP 26: Hacer hover sobre la card de mantenimiento con la API de Actions
     const cardsConId = await driver.findElements(By.css('#cardMantenimiento'));
     if (cardsConId.length > 0) {
       await driver.executeScript('arguments[0].scrollIntoView(true);', cardsConId[0]);
-      await driver.executeScript('arguments[0].dispatchEvent(new MouseEvent("mouseenter", {bubbles: true}));', cardsConId[0]);
-      await driver.sleep(500);
-      console.log('  Hover realizado sobre card de mantenimiento');
+      await driver.sleep(300);
+      // Actions API: mover el mouse al centro de la card (hover real del navegador)
+      await driver
+        .actions({ async: true })
+        .move({ origin: cardsConId[0] })
+        .pause(500)
+        .perform();
+      console.log('  Hover realizado con Actions API sobre card de mantenimiento');
     }
 
-    // STEP 27: Verificar que se puede hacer click en la card de mantenimiento
+    // STEP 27: Click en la card de mantenimiento con la API de Actions
     if (cardsConId.length > 0) {
-      await cardsConId[0].click();
+      await driver
+        .actions({ async: true })
+        .move({ origin: cardsConId[0] })
+        .click()
+        .perform();
       await driver.sleep(1500);
 
       // STEP 28: Verificar que al hacer click se abre el modal de usuarios
@@ -329,7 +338,7 @@ describe('CP-01: Navegación y Validación de Elementos - Página Principal', ()
     );
 
     // STEP 37: Obtener y validar texto del primer título
-    const textoTitulo = await h1Elements[0].getText();
+    const textoTitulo = (await h1Elements[0].getAttribute('textContent')).trim();
     assert.strictEqual(
       textoTitulo.length > 0,
       true,
@@ -347,7 +356,7 @@ describe('CP-01: Navegación y Validación de Elementos - Página Principal', ()
 
     // STEP 39: Verificar que hay texto en la sección de servicios
     const serviciosSection = await driver.findElement(By.id('servicios'));
-    const textServicios = await serviciosSection.getText();
+    const textServicios = await serviciosSection.getAttribute('textContent');
     assert.strictEqual(
       textServicios.includes('Servicio') || textServicios.includes('Reparación'),
       true,

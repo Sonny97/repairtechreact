@@ -54,13 +54,13 @@ Se crearon **3 casos de prueba E2E** con Selenium, cada uno apuntando a una URL/
 |----|--------|---------------|----------|
 | **CP-01** | Navegación y Validación de Elementos | `/` (página principal) | Verificar que todos los elementos visuales, header, footer, cards, menú dropdown están presentes y funcionan |
 | **CP-02** | Formulario de Contacto | `/#contacto` | Llenar el formulario de contacto, validar mensajes de éxito y error |
-| **CP-03** | Autenticación de Usuario | `/` (modales) | Probar login con credenciales inválidas y registro de nuevo usuario |
+| **CP-03** | Autenticación de Usuario | `/#servicios` (modales) | Probar login con credenciales inválidas y registro de nuevo usuario |
 
 ### Cobertura de condiciones requeridas
 
 | # | Condición requerida | CP-01 | CP-02 | CP-03 |
 |---|-------------------|-------|-------|-------|
-| 1 | Comandos de tipo actions (click, sendKeys, hover) | ✅ | ✅ | ✅ |
+| 1 | Comandos de tipo actions (Actions API: `move`, `click`, `pause`; `sendKeys`) | ✅ | ✅ | ✅ |
 | 2 | Aserciones de tipo texto | ✅ | ✅ | ✅ |
 | 3 | Aserciones de elementos presentes | ✅ | ✅ | ✅ |
 | 4 | Aserción de título de página | ✅ | ✅ | ✅ |
@@ -191,7 +191,7 @@ Se crearon **3 casos de prueba E2E** con Selenium, cada uno apuntando a una URL/
 ## 3.8 CP-03 — Autenticación de Usuario (Login y Registro)
 
 **Archivo:** [e2e/tests/CP-03.spec.js](../../e2e/tests/CP-03.spec.js)
-**URL:** `http://localhost:3002` (modales sobre la página principal)
+**URL:** `http://localhost:3002/#servicios` (modales sobre la sección de servicios)
 **Total de pasos:** 53 pasos en 10 sub-pruebas
 
 ### Sub-pruebas

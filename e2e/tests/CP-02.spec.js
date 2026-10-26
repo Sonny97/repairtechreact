@@ -10,11 +10,11 @@
  * - Aserciones de título y URL
  *
  * Técnicas aplicadas:
- * - Actions: sendKeys, click, clear, submit
+ * - Actions API de Selenium: move, click, sendKeys, clear, submit
  * - Assertions: texto de errores, valores de inputs, estilos CSS
  * - Dropdown: validación de selects si existen
  *
- * URL base: http://localhost:3002
+ * URL del caso: http://localhost:3002/#contacto (sección contacto)
  */
 
 const { By, Key } = require('selenium-webdriver');
@@ -22,10 +22,12 @@ const assert = require('assert');
 
 describe('CP-02: Formulario de Contacto - Llenado y Validación', () => {
   const BASE_URL = process.env.BASE_URL || 'http://localhost:3002';
+  // URL distinta del mismo dominio para este caso de prueba
+  const PAGE_URL = BASE_URL + '/#contacto';
 
   beforeEach(async () => {
-    // Navegar a la página principal antes de cada test
-    await driver.get(BASE_URL + '/');
+    // Navegar a la URL de la sección de contacto antes de cada test
+    await driver.get(PAGE_URL);
     await driver.sleep(1000);
 
     // Scroll hasta la sección de contacto
@@ -237,8 +239,13 @@ describe('CP-02: Formulario de Contacto - Llenado y Validación', () => {
     await driver.executeScript('arguments[0].scrollIntoView(true);', botonEnviar);
     await driver.sleep(500);
 
-    // STEP 25: Hacer click en el botón de enviar
-    await botonEnviar.click();
+    // STEP 25: Hacer click en el botón de enviar usando la API de Actions
+    await driver
+      .actions({ async: true })
+      .move({ origin: botonEnviar })
+      .pause(300)
+      .click()
+      .perform();
     await driver.sleep(2000);
 
     // STEP 26: Verificar que aparece el modal de éxito (AlertModal)
@@ -456,12 +463,12 @@ describe('CP-02: Formulario de Contacto - Llenado y Validación', () => {
   });
 
   it('CP-02-10: Validar URL y título de la página durante el flujo', async () => {
-    // STEP 50: Verificar URL actual
+    // STEP 50: Verificar que la URL sea exactamente la esperada para este caso
     const urlActual = await driver.getCurrentUrl();
     assert.strictEqual(
-      urlActual.includes('localhost:3002') || urlActual.includes('repairtech'),
-      true,
-      `La URL debe ser del dominio de RepairTech. Obtenida: ${urlActual}`
+      urlActual,
+      PAGE_URL,
+      `La URL debe ser exactamente ${PAGE_URL}. Obtenida: ${urlActual}`
     );
 
     // STEP 51: Verificar título de la página

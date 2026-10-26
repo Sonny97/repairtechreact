@@ -1,0 +1,58 @@
+Title,Section,Template,Type,Priority,Estimate,References,URL objetivo,Preconditions,Steps,Expected Result
+"CP-01: Navegación y Validación de Elementos de la Página Principal","CP-01 - Navegación y Elementos","Test Case (Functional)","Functional","2 - Medium","5 min","e2e/tests/CP-01.spec.js","http://localhost:3002/","Aplicación RepairTech corriendo en http://localhost:3002","1. Navegar a http://localhost:3002/ y obtener el título de la página
+2. Obtener la URL actual y compararla con la esperada
+3. Verificar presencia de los elementos header y nav
+4. Verificar que el menú de navegación tiene al menos 1 enlace
+5. Verificar presencia del footer con texto no vacío
+6. Verificar que existen al menos 3 cards de servicios, cada una con título h3
+7. Abrir el modal de registro y localizar el dropdown de tipo de documento
+8. Seleccionar la opción CE en el dropdown y verificar el valor seleccionado
+9. Validar estilos CSS: font-family del body, background-color del header y cursor pointer en botones
+10. Hacer hover y click con la API de Actions sobre la card de mantenimiento, verificar que se abre el modal y cerrarlo","1. El título contiene el nombre del sitio
+2. La URL es exactamente http://localhost:3002/
+3. Header y nav presentes
+4. Menú con enlaces visibles
+5. Footer con información
+6. 3 o más cards con títulos
+7. Dropdown presente con opciones CC, CE, TI
+8. Valor seleccionado igual a CE
+9. Propiedades CSS definidas y cursor pointer
+10. Modal de usuarios se abre y se cierra correctamente"
+"CP-02: Formulario de Contacto - Llenado y Validación de Mensajes","CP-02 - Formulario de Contacto","Test Case (Functional)","Functional","2 - Medium","6 min","e2e/tests/CP-02.spec.js","http://localhost:3002/#contacto","Aplicación RepairTech corriendo en http://localhost:3002","1. Navegar a http://localhost:3002/#contacto y verificar la URL exacta
+2. Verificar que el formulario #formularioContacto está presente
+3. Verificar presencia de los campos nombre, email, teléfono, mensaje y botón Enviar
+4. Verificar placeholders de los campos y type=email en el campo correo
+5. Validar estilos CSS del formulario: font-family, background-color, color y bordes
+6. Llenar el formulario con datos válidos y enviar con la API de Actions (move + click)
+7. Enviar el formulario vacío y verificar mensajes de error de campos requeridos
+8. Enviar con email inválido (sin @) y verificar el mensaje de error
+9. Enviar con teléfono de 5 dígitos y verificar el mensaje de error de 10 dígitos
+10. Verificar que el formulario se limpia tras un envío exitoso y que título y URL se mantienen","1. URL exactamente http://localhost:3002/#contacto
+2. Formulario presente
+3. Todos los campos y el botón presentes
+4. Placeholders definidos y type=email
+5. Propiedades CSS definidas
+6. Modal de éxito con mensaje Enviado/éxito
+7. Errores de campos requeridos visibles
+8. Error menciona correo o válido
+9. Error menciona teléfono o 10 dígitos
+10. Campos vacíos, título definido y URL sin cambios"
+"CP-03: Autenticación de Usuario - Login y Registro","CP-03 - Autenticación","Test Case (Functional)","Functional","1 - High","6 min","e2e/tests/CP-03.spec.js","http://localhost:3002/#servicios","Aplicación RepairTech corriendo en http://localhost:3002","1. Navegar a http://localhost:3002/#servicios y verificar la URL exacta
+2. Hacer click en Iniciar Sesión y verificar que el modal #loginModal es visible
+3. Verificar presencia de los campos email, password, botón submit y enlace Regístrate aquí
+4. Validar estilos CSS del modal: display flex, background-color y cursor pointer en el botón
+5. Iniciar sesión con credenciales inválidas y verificar el mensaje de error
+6. Cambiar al modal de registro con la API de Actions (move + pause + click)
+7. Verificar el dropdown de tipo de documento con opciones CC, CE, TI y los campos del registro
+8. Llenar el formulario de registro con datos válidos y verificar los valores ingresados
+9. Enviar el registro y verificar mensaje de éxito o de error por usuario existente
+10. Registrar con email inválido, verificar el error y validar título y URL exacta al finalizar","1. URL exactamente http://localhost:3002/#servicios
+2. Modal de login visible con heading Iniciar Sesión
+3. Todos los elementos del login presentes
+4. Propiedades CSS correctas
+5. Mensaje de error visible o modal permanece abierto
+6. Modal de registro visible con heading Registro de Usuario
+7. Dropdown con 3 o más opciones y todos los campos presentes
+8. Los inputs reflejan los datos ingresados
+9. Mensaje de éxito o error mostrado al usuario
+10. Error de correo inválido, título definido y URL exacta"

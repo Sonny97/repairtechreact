@@ -31,6 +31,7 @@ Project: RepairTech - Pruebas E2E
 | **Priority** | 2 - Medium |
 | **Estimate** | 5 min |
 | **References** | `e2e/tests/CP-01.spec.js` |
+| **URL objetivo** | `http://localhost:3002/` (página principal) |
 
 ### Sub-casos
 
@@ -60,6 +61,7 @@ Project: RepairTech - Pruebas E2E
 | **Priority** | 2 - Medium |
 | **Estimate** | 6 min |
 | **References** | `e2e/tests/CP-02.spec.js` |
+| **URL objetivo** | `http://localhost:3002/#contacto` (sección contacto) |
 
 ### Sub-casos
 
@@ -89,6 +91,7 @@ Project: RepairTech - Pruebas E2E
 | **Priority** | 1 - High |
 | **Estimate** | 6 min |
 | **References** | `e2e/tests/CP-03.spec.js` |
+| **URL objetivo** | `http://localhost:3002/#servicios` (sección servicios) |
 
 ### Sub-casos
 
@@ -111,14 +114,18 @@ Project: RepairTech - Pruebas E2E
 
 | Condición requerida | CP-01 | CP-02 | CP-03 | Total |
 |--------------------|:-----:|:-----:|:-----:|:-----:|
-| 1. Comandos actions | ✅ | ✅ | ✅ | 3/3 |
+| 0. URL distinta del mismo dominio | `/` | `/#contacto` | `/#servicios` | 3/3 |
+| 1. Comandos actions (Actions API: `move`, `click`, `pause`) | ✅ | ✅ | ✅ | 3/3 |
 | 2. Aserciones texto | ✅ | ✅ | ✅ | 3/3 |
 | 3. Aserciones elementos | ✅ | ✅ | ✅ | 3/3 |
 | 4. Aserción título | ✅ | ✅ | ✅ | 3/3 |
-| 6. Validación URL | ✅ | ✅ | ✅ | 3/3 |
+| 6. Validación URL (exacta) | ✅ | ✅ | ✅ | 3/3 |
 | 7. Aserciones CSS | ✅ | ✅ | ✅ | 3/3 |
 | 8. Dropdown | ✅ | — | ✅ | 2/3 |
 | 9. Formulario + mensajes | — | ✅ | ✅ | 2/3 |
 
-**Total de sub-casos: 30** (10 por cada caso de prueba)
+**Total de sub-casos: 30** (10 por cada caso de prueba, mínimo 10 pasos por caso)
 **Total de pasos ejecutables: 148**
+
+> **Importación directa:** el archivo `testrail-casos.csv` (mismo directorio) contiene
+> los 3 casos en formato CSV listo para TestRail → Test Cases → Import CSV.

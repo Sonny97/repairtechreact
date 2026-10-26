@@ -2,11 +2,13 @@
 
 # dependencies
 /node_modules
+/e2e/node_modules
 /.pnp
 .pnp.js
 
 # testing
 # /coverage
+/e2e/reports
 
 # production
 /build

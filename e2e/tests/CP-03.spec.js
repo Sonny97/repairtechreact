@@ -11,12 +11,12 @@
  * - Aserciones de texto, elementos, título, URL y estilos CSS
  *
  * Técnicas aplicadas:
- * - Actions: click, sendKeys, clear, hover
+ * - Actions API de Selenium: move, click, pause, sendKeys, clear, hover
  * - Assertions: texto de error/éxito, elementos presentes, estilos CSS
  * - Dropdown: tipo de documento en registro
  * - Validación de título y URL
  *
- * URL base: http://localhost:3002
+ * URL del caso: http://localhost:3002/#servicios (sección servicios)
  */
 
 const { By, Key } = require('selenium-webdriver');
@@ -24,11 +24,19 @@ const assert = require('assert');
 
 describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
   const BASE_URL = process.env.BASE_URL || 'http://localhost:3002';
+  // URL distinta del mismo dominio para este caso de prueba
+  const PAGE_URL = BASE_URL + '/#servicios';
+
+  beforeEach(async () => {
+    // Cada test inicia en la URL de la sección de servicios
+    await driver.get(PAGE_URL);
+    await driver.sleep(1000);
+  });
 
   it('CP-03-01: Validar que el modal de login se abre correctamente', async () => {
     // STEP 1: Buscar y hacer click en el botón de login del header
-    const botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar") or contains(text(),"Login")]')
+    let botonesLogin = await driver.findElements(
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar") or contains(text(),"Login")]')
     );
 
     // Si no hay botón directo, buscar enlace con texto "Iniciar Sesión"
@@ -69,8 +77,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
 
   it('CP-03-02: Validar elementos presentes en el formulario de login', async () => {
     // STEP 4: Abrir el modal de login
-    const botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar") or contains(text(),"Login")]')
+    let botonesLogin = await driver.findElements(
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar") or contains(text(),"Login")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -125,8 +133,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
 
   it('CP-03-03: Validar estilos CSS del modal de login', async () => {
     // STEP 9: Abrir modal de login
-    const botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+    let botonesLogin = await driver.findElements(
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -183,8 +191,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
 
   it('CP-03-04: Validar mensaje de error con credenciales inválidas', async () => {
     // STEP 14: Abrir modal de login
-    const botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+    let botonesLogin = await driver.findElements(
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -242,8 +250,8 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
 
   it('CP-03-05: Cambiar del modal de login al de registro', async () => {
     // STEP 19: Abrir modal de login
-    const botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+    let botonesLogin = await driver.findElements(
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -267,8 +275,13 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
       'El enlace de registro debe existir'
     );
 
-    // STEP 21: Click en el enlace de registro
-    await enlaceRegistro.click();
+    // STEP 21: Click en el enlace de registro usando la API de Actions
+    await driver
+      .actions({ async: true })
+      .move({ origin: enlaceRegistro })
+      .pause(300)
+      .click()
+      .perform();
     await driver.sleep(1500);
 
     // STEP 22: Verificar que el modal de registro está visible
@@ -287,7 +300,7 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
   it('CP-03-06: Validar elementos presentes en el formulario de registro', async () => {
     // STEP 23: Abrir modal de login
     let botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -349,7 +362,7 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
   it('CP-03-07: Llenar formulario de registro con datos válidos', async () => {
     // STEP 28: Abrir modal de login
     let botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -453,7 +466,7 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
   it('CP-03-08: Enviar formulario de registro y validar mensaje', async () => {
     // STEP 37: Abrir modal de login
     let botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -521,7 +534,7 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
   it('CP-03-09: Validar mensaje de error en registro con email inválido', async () => {
     // STEP 43: Abrir modal de login
     let botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(
@@ -586,18 +599,18 @@ describe('CP-03: Autenticación de Usuario - Login y Registro', () => {
     );
     console.log(`  Título de la página: "${tituloPagina}"`);
 
-    // STEP 49: Verificar URL base
+    // STEP 49: Verificar que la URL sea exactamente la esperada para este caso
     const urlActual = await driver.getCurrentUrl();
     assert.strictEqual(
-      urlActual.includes('localhost:3002') || urlActual.includes('repairtech'),
-      true,
-      `La URL debe pertenecer al dominio de RepairTech. Obtenida: ${urlActual}`
+      urlActual,
+      PAGE_URL,
+      `La URL debe ser exactamente ${PAGE_URL}. Obtenida: ${urlActual}`
     );
     console.log(`  URL actual: "${urlActual}"`);
 
     // STEP 50: Abrir modal y verificar título del modal
-    const botonesLogin = await driver.findElements(
-      By.xpath('//button[contains(text(),"Iniciar")]')
+    let botonesLogin = await driver.findElements(
+      By.xpath('//div[contains(@class,"desktop-only")]//button[contains(text(),"Iniciar")]')
     );
     if (botonesLogin.length === 0) {
       const enlacesLogin = await driver.findElements(

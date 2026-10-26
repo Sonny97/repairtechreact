@@ -61,7 +61,7 @@ npm test
 
 ### Más información
 
-Ver [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) para la documentación completa de las pruebas.
+Ver [docs/testing/03-e2e-selenium.md](./docs/testing/03-e2e-selenium.md) para la documentación completa de las pruebas.
 
 ---
 
@@ -73,7 +73,7 @@ Ver [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) para la documentació
 | [docs/testing/02-caja-blanca.md](./docs/testing/02-caja-blanca.md) | Pruebas de caja blanca del backend (Jest) |
 | [docs/testing/03-e2e-selenium.md](./docs/testing/03-e2e-selenium.md) | Pruebas E2E del frontend (Selenium) |
 | [e2e/TESTRAIL-casos.md](./e2e/TESTRAIL-casos.md) | Casos de prueba documentados en formato TestRail |
-| [PRUEBAS-AUTOMATIZADAS.md](./PRUEBAS-AUTOMATIZADAS.md) | Guía de estudio para la presentación |
+| [e2e/testrail-casos.csv](./e2e/testrail-casos.csv) | Casos de prueba en CSV listo para importar en TestRail |
 
 ---
 
