@@ -4,9 +4,13 @@
   "description": "Pruebas E2E con Selenium para RepairTech",
   "scripts": {
     "test": "jest --config=jest.config.js",
+    "test:headed": "HEADED=true jest --config=jest.config.js",
     "test:cp01": "jest --config=jest.config.js tests/CP-01.spec.js",
     "test:cp02": "jest --config=jest.config.js tests/CP-02.spec.js",
-    "test:cp03": "jest --config=jest.config.js tests/CP-03.spec.js"
+    "test:cp03": "jest --config=jest.config.js tests/CP-03.spec.js",
+    "test:cp01:headed": "HEADED=true jest --config=jest.config.js tests/CP-01.spec.js",
+    "test:cp02:headed": "HEADED=true jest --config=jest.config.js tests/CP-02.spec.js",
+    "test:cp03:headed": "HEADED=true jest --config=jest.config.js tests/CP-03.spec.js"
   },
   "dependencies": {
     "jest": "^29.7.0",

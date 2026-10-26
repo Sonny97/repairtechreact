@@ -5,6 +5,7 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:3002';
 
 beforeAll(async () => {
   const options = new chrome.Options();
+  // Por defecto corre headless (sin ventana). Para VER el navegador: HEADED=true
   if (process.env.HEADED !== 'true') options.addArguments('--headless=new');
   options.addArguments('--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--window-size=1920,1080');
 

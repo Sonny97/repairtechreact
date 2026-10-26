@@ -59,6 +59,15 @@ npm install
 npm test
 ```
 
+Por defecto corren en modo **headless** (sin ventana, como en CI).
+Para **ver el navegador** abrirse y ejecutar las acciones en vivo:
+
+```bash
+npm run test:headed          # los 3 casos con ventana visible (macOS/Linux)
+npm run test:cp01:headed     # solo CP-01 con ventana visible
+# Windows (cmd):  set HEADED=true && npm test
+```
+
 ### Más información
 
 Ver [docs/testing/03-e2e-selenium.md](./docs/testing/03-e2e-selenium.md) para la documentación completa de las pruebas.
